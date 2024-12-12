@@ -12,6 +12,9 @@ type UserService interface {
 	Get(c context.Context, uid uuid.UUID) (*models.User, error)
 	Update(c context.Context, uid uuid.UUID, user *models.User) error
 	Delete(c context.Context, uid uuid.UUID) error
+	GetAllInOrg(c context.Context, orgID uuid.UUID) ([]*models.User, error)
+	GetAllinSearch(c context.Context, searchID uuid.UUID) ([]*models.User, error)
+	GetAllInSortie(c context.Context, sortID uuid.UUID) ([]*models.User, error)
 }
 
 // UserRepository defines methods the service layer expects
@@ -20,4 +23,7 @@ type UserRepository interface {
 	FindByID(c context.Context, uid uuid.UUID) (*models.User, error)
 	Update(c context.Context, uid uuid.UUID, user *models.User) error
 	Delete(c context.Context, uid uuid.UUID) error
+	FindByOrgID(c context.Context, orgID uuid.UUID) (*models.User, error)
+	FindBySearchID(c context.Context, searchID uuid.UUID) (*models.User, error)
+	FindBySortieID(c context.Context, sortieID uuid.UUID) (*models.User, error)
 }
