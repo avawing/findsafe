@@ -16,8 +16,10 @@ type UserService struct {
 // USConfig will hold repositories that will eventually be injected into
 // this service layer.
 type USConfig struct {
-	UserRepository interfaces.UserRepository
-	TeamRepository interfaces.TeamRepository
+	UserRepository     interfaces.UserRepository
+	TeamRepository     interfaces.TeamRepository
+	ResourceRepository interfaces.ResourceRepository
+	CertRepository     interfaces.CertRepository
 }
 
 // NewUserService is a factory function for initializing a UserService with

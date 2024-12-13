@@ -22,19 +22,15 @@ func TestGetTeam(t *testing.T) {
 		uid, _ := uuid.NewRandom()
 
 		mockTeamResp := &models.Team{
-			Model:           gorm.Model{},
-			ID:              uid,
-			Name:            "ALPHA_TEAM",
-			CurrentLat:      nil,
-			CurrentLng:      nil,
-			TeamLeadID:      uuid.UUID{},
-			TeamLead:        models.User{},
-			RadioOperatorID: uuid.UUID{},
-			RadioOperator:   models.User{},
-			MedicID:         uuid.UUID{},
-			Medic:           models.User{},
-			ActiveSortie:    nil,
-			ActiveSearchID:  uuid.UUID{},
+			Model:          gorm.Model{},
+			ID:             uid,
+			Name:           "ALPHA_TEAM",
+			CurrentLat:     nil,
+			CurrentLng:     nil,
+			TeamLeadID:     uuid.UUID{},
+			TeamLead:       models.User{},
+			ActiveSortie:   nil,
+			ActiveSearchID: uuid.UUID{},
 		}
 
 		// Initialize the test fixture with the mock service
@@ -157,19 +153,15 @@ func TestGetTeams(t *testing.T) {
 		uid, _ := uuid.NewRandom()
 
 		mockTeamResp := []*models.Team{{
-			Model:           gorm.Model{},
-			ID:              uid,
-			Name:            "ALPHA_TEAM",
-			CurrentLat:      nil,
-			CurrentLng:      nil,
-			TeamLeadID:      uuid.UUID{},
-			TeamLead:        models.User{},
-			RadioOperatorID: uuid.UUID{},
-			RadioOperator:   models.User{},
-			MedicID:         uuid.UUID{},
-			Medic:           models.User{},
-			ActiveSortie:    nil,
-			ActiveSearchID:  uuid.UUID{},
+			Model:          gorm.Model{},
+			ID:             uid,
+			Name:           "ALPHA_TEAM",
+			CurrentLat:     nil,
+			CurrentLng:     nil,
+			TeamLeadID:     uuid.UUID{},
+			TeamLead:       models.User{},
+			ActiveSortie:   nil,
+			ActiveSearchID: uuid.UUID{},
 		}}
 
 		// Initialize the test fixture with the mock service
@@ -292,19 +284,15 @@ func TestGetUnassignedTeams(t *testing.T) {
 		uid, _ := uuid.NewRandom()
 
 		mockTeamResp := []*models.Team{{
-			Model:           gorm.Model{},
-			ID:              uid,
-			Name:            "ALPHA_TEAM",
-			CurrentLat:      nil,
-			CurrentLng:      nil,
-			TeamLeadID:      uuid.UUID{},
-			TeamLead:        models.User{},
-			RadioOperatorID: uuid.UUID{},
-			RadioOperator:   models.User{},
-			MedicID:         uuid.UUID{},
-			Medic:           models.User{},
-			ActiveSortie:    nil,
-			ActiveSearchID:  uuid.UUID{},
+			Model:          gorm.Model{},
+			ID:             uid,
+			Name:           "ALPHA_TEAM",
+			CurrentLat:     nil,
+			CurrentLng:     nil,
+			TeamLeadID:     uuid.UUID{},
+			TeamLead:       models.User{},
+			ActiveSortie:   nil,
+			ActiveSearchID: uuid.UUID{},
 		}}
 
 		// Initialize the test fixture with the mock service
@@ -392,19 +380,15 @@ func TestGetSortieTeams(t *testing.T) {
 		uid, _ := uuid.NewRandom()
 
 		mockTeamResp := &models.Team{
-			Model:           gorm.Model{},
-			ID:              uid,
-			Name:            "ALPHA_TEAM",
-			CurrentLat:      nil,
-			CurrentLng:      nil,
-			TeamLeadID:      uuid.UUID{},
-			TeamLead:        models.User{},
-			RadioOperatorID: uuid.UUID{},
-			RadioOperator:   models.User{},
-			MedicID:         uuid.UUID{},
-			Medic:           models.User{},
-			ActiveSortie:    nil,
-			ActiveSearchID:  uuid.UUID{},
+			Model:          gorm.Model{},
+			ID:             uid,
+			Name:           "ALPHA_TEAM",
+			CurrentLat:     nil,
+			CurrentLng:     nil,
+			TeamLeadID:     uuid.UUID{},
+			TeamLead:       models.User{},
+			ActiveSortie:   nil,
+			ActiveSearchID: uuid.UUID{},
 		}
 
 		// Initialize the test fixture with the mock service

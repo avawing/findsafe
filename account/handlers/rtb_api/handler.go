@@ -12,18 +12,20 @@ import (
 
 // Handler struct holds required services for handler to function
 type Handler struct {
-	UserService interfaces.UserService
-	TeamService interfaces.TeamService
-	CertService interfaces.CertService
+	UserService     interfaces.UserService
+	TeamService     interfaces.TeamService
+	CertService     interfaces.CertService
+	ResourceService interfaces.ResourceService
 }
 
 // Config will hold services that will eventually be injected into this
 // handler layer on handler initialization
 type Config struct {
-	R           *gin.Engine
-	UserService interfaces.UserService
-	TeamService interfaces.TeamService
-	CertService interfaces.CertService
+	R               *gin.Engine
+	UserService     interfaces.UserService
+	TeamService     interfaces.TeamService
+	CertService     interfaces.CertService
+	ResourceService interfaces.ResourceService
 }
 
 // NewHandler initializes the handler with required injected services along with http routes
@@ -32,10 +34,11 @@ func NewHandler(c *Config) {
 	// Create an account group
 	// Create a handler (which will later have injected services)
 	h := &Handler{
-		UserService: c.UserService,
-		TeamService: c.TeamService,
-		CertService: c.CertService,
-	} // currently has no properties
+		UserService:     c.UserService,
+		TeamService:     c.TeamService,
+		CertService:     c.CertService,
+		ResourceService: c.ResourceService,
+	}
 
 	// Create a group, or base url for all routes
 	g := c.R.Group("/users")
@@ -44,8 +47,8 @@ func NewHandler(c *Config) {
 	g.PUT("/:id", h.UpdateUser)
 	g.DELETE("/:id", h.DeleteUser)
 	g.GET("/organization/:id", h.GetUsersInOrg)
-
 	g.GET("/:id/certifications", h.GetUserCertifications)
+
 	n := g.Group("/certifications")
 	n.GET("/:id", h.GetUserCertification)
 	n.PUT("/:id", h.UpdateUserCertification)
@@ -54,6 +57,7 @@ func NewHandler(c *Config) {
 	g.GET("/search/:id", h.GetUsersInSearch)
 	g.GET("/sortie/:id", h.GetUsersInSortie)
 	g.POST("/resources", h.CreateUserResource)
+	g.GET("/:id/resources", h.GetUserResources)
 
 	t := c.R.Group("/teams")
 	t.GET("/:id", h.GetTeam)
@@ -63,6 +67,11 @@ func NewHandler(c *Config) {
 	t.GET("/search/:id", h.GetTeams)
 	t.GET("/search/:id/unassigned", h.GetUnassigned)
 	t.GET("/sortie/:id", h.GetSortie)
+
+	r := c.R.Group("/resources")
+	r.GET("/:id", h.GetResource)
+	r.PUT("/:id", h.UpdateUserResource)
+	r.DELETE("/:id", h.DeleteUserResource)
 
 }
 
@@ -93,6 +102,7 @@ func (h *Handler) Me(c *gin.Context) {
 	}
 }
 
+// Users
 func (h *Handler) GetUser(c *gin.Context) {
 	id := c.Param("id")
 
@@ -186,6 +196,7 @@ func (h *Handler) GetUsersInSortie(c *gin.Context) {
 	}
 }
 
+// Resources
 func (h *Handler) CreateUserResource(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"hello": "it's me",
@@ -193,7 +204,10 @@ func (h *Handler) CreateUserResource(c *gin.Context) {
 }
 func (h *Handler) UpdateUserResource(c *gin.Context) {}
 func (h *Handler) DeleteUserResource(c *gin.Context) {}
+func (h *Handler) GetResource(c *gin.Context)        {}
+func (h *Handler) GetUserResources(c *gin.Context)   {}
 
+// Certifications
 func (h *Handler) GetUserCertifications(c *gin.Context) {
 	id := c.Param("id")
 
@@ -238,6 +252,7 @@ func (h *Handler) GetUserCertification(c *gin.Context) {
 	}
 }
 
+// Teams
 func (h *Handler) GetTeam(c *gin.Context) {
 	id := c.Param("id")
 	uid, err := uuid.Parse(id)
