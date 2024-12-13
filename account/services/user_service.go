@@ -17,6 +17,7 @@ type UserService struct {
 // this service layer.
 type USConfig struct {
 	UserRepository interfaces.UserRepository
+	TeamRepository interfaces.TeamRepository
 }
 
 // NewUserService is a factory function for initializing a UserService with
