@@ -24,6 +24,7 @@ type testFixture struct {
 	mockTeamService     *mocks2.MockTeamService
 	mockCertService     *mocks2.MockCertService
 	mockResourceService *mocks2.MockResourceService
+	mockOrgService      *mocks2.MockOrgService
 }
 
 func (tf *testFixture) setup() {

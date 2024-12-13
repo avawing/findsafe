@@ -17,6 +17,7 @@ type User struct {
 	Certifications    []Certification `gorm:"foreignKey:UserID"`
 	Resources         []Resource      `gorm:"foreignKey:OwnerID"`
 	AssignedResources []Resource      `gorm:"foreignKey:IssuedToUserID"`
+	Organizations     []*Organization `gorm:"many2many:user_languages;"`
 	// Foreign Key
 	ActiveSearchID *uuid.UUID `json:"active_search_id"`
 	ActiveSortieID *uuid.UUID `json:"active_sortie_id"`

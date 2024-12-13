@@ -8,12 +8,13 @@ import (
 
 type Certification struct {
 	gorm.Model
-	ID             uuid.UUID `gorm:"primaryKey;type:uuid;default:uuid_generate_v4()"`
-	Name           string    `gorm:"not null"` // TODO: enums provided by orgs ?
-	FileLocation   string
-	DateGranted    time.Time `gorm:"not null"`
-	ExpirationDate time.Time `gorm:"not null"`
-	UserID         uuid.UUID
-	User           User      `gorm:"notnull;foreignKey:UserID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
-	AccreditingOrg uuid.UUID // TODO: Certifications Offered by Organizations (I.E. NASAR)
+	ID               uuid.UUID `gorm:"primaryKey;type:uuid;default:uuid_generate_v4()"`
+	Name             string    `gorm:"not null"` // TODO: enums provided by orgs ?
+	FileLocation     string
+	DateGranted      time.Time `gorm:"not null"`
+	ExpirationDate   time.Time `gorm:"not null"`
+	UserID           uuid.UUID
+	User             User      `gorm:"notnull;foreignKey:UserID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
+	AccreditingOrgID uuid.UUID // TODO: Certifications Offered by Organizations (I.E. NASAR) for USERS
+	OfferedByOrgID   uuid.UUID // This is for Organizations to list the Certifications they offer
 }

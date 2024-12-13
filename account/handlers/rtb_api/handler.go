@@ -16,6 +16,7 @@ type Handler struct {
 	TeamService     interfaces.TeamService
 	CertService     interfaces.CertService
 	ResourceService interfaces.ResourceService
+	OrgService      interfaces.OrgService
 }
 
 // Config will hold services that will eventually be injected into this
@@ -26,6 +27,7 @@ type Config struct {
 	TeamService     interfaces.TeamService
 	CertService     interfaces.CertService
 	ResourceService interfaces.ResourceService
+	OrgService      interfaces.OrgService
 }
 
 // NewHandler initializes the handler with required injected services along with http routes
@@ -38,6 +40,7 @@ func NewHandler(c *Config) {
 		TeamService:     c.TeamService,
 		CertService:     c.CertService,
 		ResourceService: c.ResourceService,
+		OrgService:      c.OrgService,
 	}
 
 	// Create a group, or base url for all routes
@@ -72,6 +75,13 @@ func NewHandler(c *Config) {
 	r.GET("/:id", h.GetResource)
 	r.PUT("/:id", h.UpdateUserResource)
 	r.DELETE("/:id", h.DeleteUserResource)
+
+	o := c.R.Group("/organizations")
+	o.GET("/:id/certifications", h.GetOrgCertifications)
+	o.GET("/:id", h.GetOrg)
+	o.PUT("/:id", h.UpdateOrg)
+	o.DELETE("/:id", h.DeleteOrg)
+	o.GET("/", h.GetOrgs)
 
 }
 
@@ -363,3 +373,55 @@ func (h *Handler) GetUnassigned(c *gin.Context) {
 		})
 	}
 }
+
+func (h *Handler) GetOrg(c *gin.Context) {
+	id := c.Param("id")
+	uid, err := uuid.Parse(id)
+	if err != nil {
+		log.Printf("Unable to generate UUID from request: %v\n", err)
+		e := apperrors.NewBadRequest("invalid organization id")
+		c.AbortWithStatusJSON(e.Status(), gin.H{"error": e})
+		return
+	}
+	if t, uErr := h.OrgService.Get(c, uid); uErr != nil {
+		log.Printf("Unable to find organization: %v\n%v", uid, uErr)
+		e := apperrors.NewNotFound("organization", uid.String())
+		c.AbortWithStatusJSON(e.Status(), gin.H{"error": e})
+	} else {
+		c.JSON(http.StatusOK, gin.H{
+			"organization": t,
+		})
+	}
+}
+func (h *Handler) GetOrgs(c *gin.Context) {
+	if t, uErr := h.OrgService.GetAll(c); uErr != nil {
+		log.Printf("Unable to find organization: %v\n%v", uErr)
+		e := apperrors.NewNotFound("organizations", uErr.Error())
+		c.AbortWithStatusJSON(e.Status(), gin.H{"error": e})
+	} else {
+		c.JSON(http.StatusOK, gin.H{
+			"organizations": t,
+		})
+	}
+}
+func (h *Handler) GetOrgCertifications(c *gin.Context) {
+	id := c.Param("id")
+	uid, err := uuid.Parse(id)
+	if err != nil {
+		log.Printf("Unable to generate UUID from request: %v\n", err)
+		e := apperrors.NewBadRequest("invalid organization id")
+		c.AbortWithStatusJSON(e.Status(), gin.H{"error": e})
+		return
+	}
+	if t, uErr := h.CertService.GetByAccreditingOrg(c, uid); uErr != nil {
+		log.Printf("Unable to find organization: %v\n%v", uid, uErr)
+		e := apperrors.NewNotFound("organization", uid.String())
+		c.AbortWithStatusJSON(e.Status(), gin.H{"error": e})
+	} else {
+		c.JSON(http.StatusOK, gin.H{
+			"organization": t,
+		})
+	}
+}
+func (h *Handler) UpdateOrg(c *gin.Context) {}
+func (h *Handler) DeleteOrg(c *gin.Context) {}
