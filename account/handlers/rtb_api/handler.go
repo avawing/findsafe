@@ -13,6 +13,7 @@ import (
 // Handler struct holds required services for handler to function
 type Handler struct {
 	UserService interfaces.UserService
+	TeamService interfaces.TeamService
 }
 
 // Config will hold services that will eventually be injected into this
@@ -20,6 +21,7 @@ type Handler struct {
 type Config struct {
 	R           *gin.Engine
 	UserService interfaces.UserService
+	TeamService interfaces.TeamService
 }
 
 // NewHandler initializes the handler with required injected services along with http routes
@@ -29,6 +31,7 @@ func NewHandler(c *Config) {
 	// Create a handler (which will later have injected services)
 	h := &Handler{
 		UserService: c.UserService,
+		TeamService: c.TeamService,
 	} // currently has no properties
 
 	// Create a group, or base url for all routes
@@ -42,6 +45,16 @@ func NewHandler(c *Config) {
 	g.GET("/search/:id", h.GetUsersInSearch)
 	g.GET("/sortie/:id", h.GetUsersInSortie)
 	g.POST("/resources", h.CreateUserResource)
+
+	t := c.R.Group("/teams")
+	t.GET("/:id", h.GetTeam)
+	t.PUT("/:id", h.UpdateTeam)
+	t.DELETE("/:id", h.DeleteTeam)
+
+	t.GET("/search/:id", h.GetTeams)
+	t.GET("/search/:id/unassigned", h.GetUnassigned)
+	t.GET("/sortie/:id", h.GetSortie)
+
 }
 
 // Me handler calls services for getting
@@ -54,10 +67,17 @@ func (h *Handler) Me(c *gin.Context) {
 		c.AbortWithStatusJSON(err.Status(), gin.H{"error": err})
 	}
 
-	uid := user.(*models.User).ID
-	if u, err := h.UserService.Get(c, uid); err != nil {
-		log.Printf("Unable to find user: %v\n%v", uid, err)
-		e := apperrors.NewNotFound("user", uid.String())
+	us, ok := user.(*models.User)
+	if !ok {
+		log.Printf("User in context is not of type *models.User: %v\n", user)
+		err := apperrors.NewInternal()
+		c.AbortWithStatusJSON(err.Status(), gin.H{"error": err})
+		return // Ensure we don't continue further in this handler
+	}
+
+	if u, err := h.UserService.Get(c, us.ID); err != nil {
+		log.Printf("Unable to find user: %v\n%v", us.ID, err)
+		e := apperrors.NewNotFound("user", us.ID.String())
 		c.AbortWithStatusJSON(e.Status(), gin.H{"error": e})
 	} else {
 		c.JSON(http.StatusOK, gin.H{
@@ -168,4 +188,75 @@ func (h *Handler) CreateUserResource(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"hello": "it's me",
 	})
+}
+
+func (h *Handler) GetTeam(c *gin.Context) {
+	id := c.Param("id")
+	uid, err := uuid.Parse(id)
+	if err != nil {
+		log.Printf("Unable to generate UUID from request: %v\n", err)
+		e := apperrors.NewBadRequest("invalid user id")
+		c.AbortWithStatusJSON(e.Status(), gin.H{"error": e})
+		return
+	}
+	if t, uErr := h.TeamService.Get(c, uid); uErr != nil {
+		log.Printf("Unable to find team: %v\n%v", uid, uErr)
+		e := apperrors.NewNotFound("team", uid.String())
+		c.AbortWithStatusJSON(e.Status(), gin.H{"error": e})
+	} else {
+		c.JSON(http.StatusOK, gin.H{
+			"team": t,
+		})
+	}
+}
+func (h *Handler) UpdateTeam(c *gin.Context) {}
+func (h *Handler) DeleteTeam(c *gin.Context) {}
+func (h *Handler) GetTeams(c *gin.Context) {
+	id := c.Param("id")
+	uid, err := uuid.Parse(id)
+	if err != nil {
+		log.Printf("Unable to generate UUID from request: %v\n", err)
+		e := apperrors.NewBadRequest("invalid user id")
+		c.AbortWithStatusJSON(e.Status(), gin.H{"error": e})
+		return
+	}
+	if t, tErr := h.TeamService.GetAllinSearch(c, uid); tErr != nil {
+		log.Printf("Unable to find team: %v\n%v", uid, err)
+		e := apperrors.NewNotFound("search id", uid.String())
+		c.AbortWithStatusJSON(e.Status(), gin.H{"error": e})
+	} else {
+		c.JSON(http.StatusOK, gin.H{
+			"teams": t,
+		})
+	}
+}
+func (h *Handler) GetSortie(c *gin.Context) {
+	id := c.Param("id")
+	uid, err := uuid.Parse(id)
+	if err != nil {
+		log.Printf("Unable to generate UUID from request: %v\n", err)
+		e := apperrors.NewBadRequest("invalid user id")
+		c.AbortWithStatusJSON(e.Status(), gin.H{"error": e})
+		return
+	}
+	if t, tErr := h.TeamService.GetBySortie(c, uid); tErr != nil {
+		log.Printf("Unable to find team: %v\n%v", uid, err)
+		e := apperrors.NewNotFound("sortie id", uid.String())
+		c.AbortWithStatusJSON(e.Status(), gin.H{"error": e})
+	} else {
+		c.JSON(http.StatusOK, gin.H{
+			"team": t,
+		})
+	}
+}
+func (h *Handler) GetUnassigned(c *gin.Context) {
+	if t, tErr := h.TeamService.GetAllWithoutSortie(c); tErr != nil {
+		log.Printf("No Unassigned Teams: %v\n%v", tErr)
+		e := apperrors.NewNotFound("teams", "unassigned")
+		c.AbortWithStatusJSON(e.Status(), gin.H{"error": e})
+	} else {
+		c.JSON(http.StatusOK, gin.H{
+			"teams": t,
+		})
+	}
 }

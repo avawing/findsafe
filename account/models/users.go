@@ -15,8 +15,11 @@ type User struct {
 	Email     string    `gorm:"not null, type:varchar(100)" json:"email"`
 	Phone     string    `gorm:"not null, type:varchar(20)" json:"phone"`
 	// Foreign Key
-	ActiveSearch *uuid.UUID `json:"active_search"`
-	ActiveSortie *uuid.UUID `json:"active_sortie"`
+	ActiveSearchID *uuid.UUID `json:"active_search"`
+	ActiveSortieID *uuid.UUID `json:"active_sortie"`
+	ActiveTeamID   *uuid.UUID `json:"active_team"`
+	Team           *Team      `gorm:"foreignKey:ActiveTeamID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
+
 	//Searches       int
 	//Sorties        int
 	//Evidence       int

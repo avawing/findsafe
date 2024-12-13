@@ -21,6 +21,7 @@ type testFixture struct {
 	router          *gin.Engine
 	rr              *httptest.ResponseRecorder
 	mockUserService *mocks.MockUserService
+	mockTeamService *mocks.MockTeamService
 }
 
 func (tf *testFixture) setup() {
@@ -36,13 +37,12 @@ func TestMe(t *testing.T) {
 		uid, _ := uuid.NewRandom()
 
 		mockUserResp := &models.User{
-			Model:        gorm.Model{},
-			ID:           uid,
-			FirstName:    "TEST_USER_FIRST_NAME",
-			LastName:     "TEST_USER_LAST_NAME",
-			City:         "TEST_CITY",
-			State:        "CA",
-			ActiveSearch: nil,
+			Model:     gorm.Model{},
+			ID:        uid,
+			FirstName: "TEST_USER_FIRST_NAME",
+			LastName:  "TEST_USER_LAST_NAME",
+			City:      "TEST_CITY",
+			State:     "CA",
 		}
 
 		// Initialize the test fixture with the mock service
@@ -60,10 +60,10 @@ func TestMe(t *testing.T) {
 			})
 		})
 
-		handlers.NewHandler((&handlers.Config{
+		handlers.NewHandler(&handlers.Config{
 			R:           tf.router,
 			UserService: tf.mockUserService,
-		}))
+		})
 
 		request, err := http.NewRequest(http.MethodGet, "/users/me", nil)
 		assert.NoError(t, err)
@@ -83,15 +83,14 @@ func TestMe(t *testing.T) {
 	t.Run("NoContextUser", func(t *testing.T) {
 		tf := &testFixture{
 			mockUserService: new(mocks.MockUserService),
+			mockTeamService: new(mocks.MockTeamService),
 		}
 		tf.setup()
-
-		// Use the mock directly from the fixture
-		tf.mockUserService.On("Get", mock.Anything, mock.Anything).Return(nil, nil)
 
 		handlers.NewHandler(&handlers.Config{
 			R:           tf.router,
 			UserService: tf.mockUserService,
+			TeamService: tf.mockTeamService,
 		})
 
 		request, err := http.NewRequest(http.MethodGet, "/users/me", nil)
@@ -112,7 +111,7 @@ func TestMe(t *testing.T) {
 		tf.setup()
 
 		// Use the mock directly from the fixture
-		tf.mockUserService.On("Get", mock.Anything, uid).Return(&models.User{}, fmt.Errorf("Some error down call chain"))
+		tf.mockUserService.On("Get", mock.Anything, uid).Return(&models.User{}, fmt.Errorf("some error down call chain"))
 
 		tf.router.Use(func(c *gin.Context) {
 			c.Set("user", &models.User{
@@ -149,13 +148,12 @@ func TestGetUser(t *testing.T) {
 		uid, _ := uuid.NewRandom()
 
 		mockUserResp := &models.User{
-			Model:        gorm.Model{},
-			ID:           uid,
-			FirstName:    "TEST_USER_FIRST_NAME",
-			LastName:     "TEST_USER_LAST_NAME",
-			City:         "TEST_CITY",
-			State:        "CA",
-			ActiveSearch: nil,
+			Model:     gorm.Model{},
+			ID:        uid,
+			FirstName: "TEST_USER_FIRST_NAME",
+			LastName:  "TEST_USER_LAST_NAME",
+			City:      "TEST_CITY",
+			State:     "CA",
 		}
 
 		// Initialize the test fixture with the mock service
@@ -173,10 +171,10 @@ func TestGetUser(t *testing.T) {
 			})
 		})
 
-		handlers.NewHandler((&handlers.Config{
+		handlers.NewHandler(&handlers.Config{
 			R:           tf.router,
 			UserService: tf.mockUserService,
-		}))
+		})
 
 		request, err := http.NewRequest(http.MethodGet, fmt.Sprintf("/users/%s", uid.String()), nil)
 		assert.NoError(t, err)
@@ -225,7 +223,7 @@ func TestGetUser(t *testing.T) {
 		tf.setup()
 
 		// Use the mock directly from the fixture
-		tf.mockUserService.On("Get", mock.Anything, uid).Return(&models.User{}, fmt.Errorf("Some error down call chain"))
+		tf.mockUserService.On("Get", mock.Anything, uid).Return(&models.User{}, fmt.Errorf("some error down call chain"))
 
 		tf.router.Use(func(c *gin.Context) {
 			c.Set("user", &models.User{
@@ -262,16 +260,14 @@ func TestGetUsersBySearch(t *testing.T) {
 		uid, _ := uuid.NewRandom()
 
 		mockUserResp := []*models.User{{
-			Model:        gorm.Model{},
-			ID:           uid,
-			FirstName:    "TEST_USER_FIRST_NAME",
-			LastName:     "TEST_USER_LAST_NAME",
-			City:         "TEST_CITY",
-			State:        "CA",
-			Email:        "TEST_USER@TEST_EMAIL.COM",
-			Phone:        "1-555-555-5555",
-			ActiveSearch: nil,
-			ActiveSortie: nil,
+			Model:     gorm.Model{},
+			ID:        uid,
+			FirstName: "TEST_USER_FIRST_NAME",
+			LastName:  "TEST_USER_LAST_NAME",
+			City:      "TEST_CITY",
+			State:     "CA",
+			Email:     "TEST_USER@TEST_EMAIL.COM",
+			Phone:     "1-555-555-5555",
 		}}
 
 		// Initialize the test fixture with the mock service
@@ -289,10 +285,10 @@ func TestGetUsersBySearch(t *testing.T) {
 			})
 		})
 
-		handlers.NewHandler((&handlers.Config{
+		handlers.NewHandler(&handlers.Config{
 			R:           tf.router,
 			UserService: tf.mockUserService,
-		}))
+		})
 
 		request, err := http.NewRequest(http.MethodGet, fmt.Sprintf("/users/search/%s", uid.String()), nil)
 		assert.NoError(t, err)
@@ -341,7 +337,7 @@ func TestGetUsersBySearch(t *testing.T) {
 		tf.setup()
 
 		// Use the mock directly from the fixture
-		tf.mockUserService.On("GetAllinSearch", mock.Anything, uid).Return([]*models.User{}, fmt.Errorf("Some error down call chain"))
+		tf.mockUserService.On("GetAllinSearch", mock.Anything, uid).Return([]*models.User{}, fmt.Errorf("some error down call chain"))
 
 		tf.router.Use(func(c *gin.Context) {
 			c.Set("user", &models.User{
@@ -378,16 +374,14 @@ func TestGetUsersByOrg(t *testing.T) {
 		uid, _ := uuid.NewRandom()
 
 		mockUserResp := []*models.User{{
-			Model:        gorm.Model{},
-			ID:           uid,
-			FirstName:    "TEST_USER_FIRST_NAME",
-			LastName:     "TEST_USER_LAST_NAME",
-			City:         "TEST_CITY",
-			State:        "CA",
-			Email:        "TEST_USER@TEST_EMAIL.COM",
-			Phone:        "1-555-555-5555",
-			ActiveSearch: nil,
-			ActiveSortie: nil,
+			Model:     gorm.Model{},
+			ID:        uid,
+			FirstName: "TEST_USER_FIRST_NAME",
+			LastName:  "TEST_USER_LAST_NAME",
+			City:      "TEST_CITY",
+			State:     "CA",
+			Email:     "TEST_USER@TEST_EMAIL.COM",
+			Phone:     "1-555-555-5555",
 		}}
 
 		// Initialize the test fixture with the mock service
@@ -405,10 +399,10 @@ func TestGetUsersByOrg(t *testing.T) {
 			})
 		})
 
-		handlers.NewHandler((&handlers.Config{
+		handlers.NewHandler(&handlers.Config{
 			R:           tf.router,
 			UserService: tf.mockUserService,
-		}))
+		})
 
 		request, err := http.NewRequest(http.MethodGet, fmt.Sprintf("/users/organization/%s", uid.String()), nil)
 		assert.NoError(t, err)
@@ -457,7 +451,7 @@ func TestGetUsersByOrg(t *testing.T) {
 		tf.setup()
 
 		// Use the mock directly from the fixture
-		tf.mockUserService.On("GetAllInOrg", mock.Anything, uid).Return([]*models.User{}, fmt.Errorf("Some error down call chain"))
+		tf.mockUserService.On("GetAllInOrg", mock.Anything, uid).Return([]*models.User{}, fmt.Errorf("some error down call chain"))
 
 		tf.router.Use(func(c *gin.Context) {
 			c.Set("user", &models.User{
@@ -494,16 +488,14 @@ func TestGetUsersBySortie(t *testing.T) {
 		uid, _ := uuid.NewRandom()
 
 		mockUserResp := []*models.User{{
-			Model:        gorm.Model{},
-			ID:           uid,
-			FirstName:    "TEST_USER_FIRST_NAME",
-			LastName:     "TEST_USER_LAST_NAME",
-			City:         "TEST_CITY",
-			State:        "CA",
-			Email:        "TEST_USER@TEST_EMAIL.COM",
-			Phone:        "1-555-555-5555",
-			ActiveSearch: nil,
-			ActiveSortie: nil,
+			Model:     gorm.Model{},
+			ID:        uid,
+			FirstName: "TEST_USER_FIRST_NAME",
+			LastName:  "TEST_USER_LAST_NAME",
+			City:      "TEST_CITY",
+			State:     "CA",
+			Email:     "TEST_USER@TEST_EMAIL.COM",
+			Phone:     "1-555-555-5555",
 		}}
 
 		// Initialize the test fixture with the mock service
@@ -521,10 +513,10 @@ func TestGetUsersBySortie(t *testing.T) {
 			})
 		})
 
-		handlers.NewHandler((&handlers.Config{
+		handlers.NewHandler(&handlers.Config{
 			R:           tf.router,
 			UserService: tf.mockUserService,
-		}))
+		})
 
 		request, err := http.NewRequest(http.MethodGet, fmt.Sprintf("/users/sortie/%s", uid.String()), nil)
 		assert.NoError(t, err)
@@ -573,7 +565,7 @@ func TestGetUsersBySortie(t *testing.T) {
 		tf.setup()
 
 		// Use the mock directly from the fixture
-		tf.mockUserService.On("GetAllInSortie", mock.Anything, uid).Return([]*models.User{}, fmt.Errorf("Some error down call chain"))
+		tf.mockUserService.On("GetAllInSortie", mock.Anything, uid).Return([]*models.User{}, fmt.Errorf("some error down call chain"))
 
 		tf.router.Use(func(c *gin.Context) {
 			c.Set("user", &models.User{
