@@ -204,8 +204,48 @@ func (h *Handler) CreateUserResource(c *gin.Context) {
 }
 func (h *Handler) UpdateUserResource(c *gin.Context) {}
 func (h *Handler) DeleteUserResource(c *gin.Context) {}
-func (h *Handler) GetResource(c *gin.Context)        {}
-func (h *Handler) GetUserResources(c *gin.Context)   {}
+func (h *Handler) GetResource(c *gin.Context) {
+	_ = c.DefaultQuery("Type", "")
+	id := c.Param("id")
+
+	uid, err := uuid.Parse(id)
+	if err != nil {
+		log.Printf("Unable to generate UUID from request: %v\n", err)
+		e := apperrors.NewBadRequest("invalid user id")
+		c.AbortWithStatusJSON(e.Status(), gin.H{"error": e})
+		return
+	}
+	if u, uErr := h.ResourceService.Get(c, uid); uErr != nil {
+		log.Printf("Unable to find user: %v\n%v", uid, err)
+		e := apperrors.NewNotFound("user", uid.String())
+		c.AbortWithStatusJSON(e.Status(), gin.H{"error": e})
+	} else {
+		c.JSON(http.StatusOK, gin.H{
+			"users": u,
+		})
+	}
+}
+func (h *Handler) GetUserResources(c *gin.Context) {
+	_ = c.DefaultQuery("Type", "")
+	id := c.Param("id")
+
+	uid, err := uuid.Parse(id)
+	if err != nil {
+		log.Printf("Unable to generate UUID from request: %v\n", err)
+		e := apperrors.NewBadRequest("invalid user id")
+		c.AbortWithStatusJSON(e.Status(), gin.H{"error": e})
+		return
+	}
+	if u, uErr := h.ResourceService.GetByOwnerID(c, uid); uErr != nil {
+		log.Printf("Unable to find user: %v\n%v", uid, err)
+		e := apperrors.NewNotFound("user", uid.String())
+		c.AbortWithStatusJSON(e.Status(), gin.H{"error": e})
+	} else {
+		c.JSON(http.StatusOK, gin.H{
+			"users": u,
+		})
+	}
+}
 
 // Certifications
 func (h *Handler) GetUserCertifications(c *gin.Context) {

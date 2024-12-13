@@ -27,26 +27,26 @@ func (m *MockResourceService) Delete(c context.Context, uid uuid.UUID) error {
 }
 
 func (m *MockResourceService) GetByOwnerID(c context.Context, ownerID uuid.UUID) ([]*models.Resource, error) {
-	args := m.Called(c, &ownerID)
+	args := m.Called(c, ownerID)
 	return args.Get(0).([]*models.Resource), args.Error(1)
 }
 
 func (m *MockResourceService) GetByIssuedID(c context.Context, issuedID uuid.UUID) ([]*models.Resource, error) {
-	args := m.Called(c, &issuedID)
+	args := m.Called(c, issuedID)
 	return args.Get(0).([]*models.Resource), args.Error(1)
 }
 
 func (m *MockResourceService) GetByTeamID(c context.Context, teamID uuid.UUID) ([]*models.Resource, error) {
-	args := m.Called(c, &teamID)
+	args := m.Called(c, teamID)
 	return args.Get(0).([]*models.Resource), args.Error(1)
 }
 
 func (m *MockResourceService) GetByAvailable(c context.Context, searchID uuid.UUID) ([]*models.Resource, error) {
-	args := m.Called(c, &searchID)
+	args := m.Called(c, searchID)
 	return args.Get(0).([]*models.Resource), args.Error(1)
 }
 
 func (m *MockResourceService) GetUnreturned(c context.Context, searchID uuid.UUID) ([]*models.Resource, error) {
-	args := m.Called(c, &searchID)
+	args := m.Called(c, searchID)
 	return args.Get(0).([]*models.Resource), args.Error(1)
 }

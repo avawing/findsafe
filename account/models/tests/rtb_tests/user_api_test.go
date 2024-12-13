@@ -18,11 +18,12 @@ import (
 )
 
 type testFixture struct {
-	router          *gin.Engine
-	rr              *httptest.ResponseRecorder
-	mockUserService *mocks2.MockUserService
-	mockTeamService *mocks2.MockTeamService
-	mockCertService *mocks2.MockCertService
+	router              *gin.Engine
+	rr                  *httptest.ResponseRecorder
+	mockUserService     *mocks2.MockUserService
+	mockTeamService     *mocks2.MockTeamService
+	mockCertService     *mocks2.MockCertService
+	mockResourceService *mocks2.MockResourceService
 }
 
 func (tf *testFixture) setup() {
