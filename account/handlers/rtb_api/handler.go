@@ -14,6 +14,7 @@ import (
 type Handler struct {
 	UserService interfaces.UserService
 	TeamService interfaces.TeamService
+	CertService interfaces.CertService
 }
 
 // Config will hold services that will eventually be injected into this
@@ -22,6 +23,7 @@ type Config struct {
 	R           *gin.Engine
 	UserService interfaces.UserService
 	TeamService interfaces.TeamService
+	CertService interfaces.CertService
 }
 
 // NewHandler initializes the handler with required injected services along with http routes
@@ -32,6 +34,7 @@ func NewHandler(c *Config) {
 	h := &Handler{
 		UserService: c.UserService,
 		TeamService: c.TeamService,
+		CertService: c.CertService,
 	} // currently has no properties
 
 	// Create a group, or base url for all routes
@@ -41,6 +44,12 @@ func NewHandler(c *Config) {
 	g.PUT("/:id", h.UpdateUser)
 	g.DELETE("/:id", h.DeleteUser)
 	g.GET("/organization/:id", h.GetUsersInOrg)
+
+	g.GET("/:id/certifications", h.GetUserCertifications)
+	n := g.Group("/certifications")
+	n.GET("/:id", h.GetUserCertification)
+	n.PUT("/:id", h.UpdateUserCertification)
+	n.DELETE("/:id", h.DeleteUserCertification)
 	// Search Admin
 	g.GET("/search/:id", h.GetUsersInSearch)
 	g.GET("/sortie/:id", h.GetUsersInSortie)
@@ -57,8 +66,6 @@ func NewHandler(c *Config) {
 
 }
 
-// Me handler calls services for getting
-// a user's details
 func (h *Handler) Me(c *gin.Context) {
 	user, exists := c.Get("user")
 	if !exists {
@@ -106,19 +113,16 @@ func (h *Handler) GetUser(c *gin.Context) {
 		})
 	}
 }
-
 func (h *Handler) UpdateUser(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"hello": "it's me",
 	})
 }
-
 func (h *Handler) DeleteUser(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"hello": "it's me",
 	})
 }
-
 func (h *Handler) GetUsersInOrg(c *gin.Context) {
 	_ = c.DefaultQuery("Type", "")
 	id := c.Param("id")
@@ -140,7 +144,6 @@ func (h *Handler) GetUsersInOrg(c *gin.Context) {
 		})
 	}
 }
-
 func (h *Handler) GetUsersInSearch(c *gin.Context) {
 	_ = c.DefaultQuery("Type", "")
 	id := c.Param("id")
@@ -162,7 +165,6 @@ func (h *Handler) GetUsersInSearch(c *gin.Context) {
 		})
 	}
 }
-
 func (h *Handler) GetUsersInSortie(c *gin.Context) {
 	id := c.Param("id")
 
@@ -188,6 +190,52 @@ func (h *Handler) CreateUserResource(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"hello": "it's me",
 	})
+}
+func (h *Handler) UpdateUserResource(c *gin.Context) {}
+func (h *Handler) DeleteUserResource(c *gin.Context) {}
+
+func (h *Handler) GetUserCertifications(c *gin.Context) {
+	id := c.Param("id")
+
+	uid, err := uuid.Parse(id)
+	if err != nil {
+		log.Printf("Unable to generate UUID from request: %v\n", err)
+		e := apperrors.NewBadRequest("invalid user id")
+		c.AbortWithStatusJSON(e.Status(), gin.H{"error": e})
+		return
+	}
+	if u, uErr := h.CertService.GetByUserID(c, uid); uErr != nil {
+		log.Printf("Unable to find certifications: %v\n%v", uid, uErr)
+		e := apperrors.NewNotFound("user", uid.String())
+		c.AbortWithStatusJSON(e.Status(), gin.H{"error": e})
+	} else {
+		c.JSON(http.StatusOK, gin.H{
+			"certifications": u,
+		})
+	}
+}
+func (h *Handler) CreateUserCertification(c *gin.Context) {}
+func (h *Handler) UpdateUserCertification(c *gin.Context) {}
+func (h *Handler) DeleteUserCertification(c *gin.Context) {}
+func (h *Handler) GetUserCertification(c *gin.Context) {
+	id := c.Param("id")
+
+	uid, err := uuid.Parse(id)
+	if err != nil {
+		log.Printf("Unable to generate UUID from request: %v\n", err)
+		e := apperrors.NewBadRequest("invalid user id")
+		c.AbortWithStatusJSON(e.Status(), gin.H{"error": e})
+		return
+	}
+	if u, uErr := h.CertService.Get(c, uid); uErr != nil {
+		log.Printf("Unable to find certifications: %v\n%v", uid, err)
+		e := apperrors.NewNotFound("user", uid.String())
+		c.AbortWithStatusJSON(e.Status(), gin.H{"error": e})
+	} else {
+		c.JSON(http.StatusOK, gin.H{
+			"certifications": u,
+		})
+	}
 }
 
 func (h *Handler) GetTeam(c *gin.Context) {

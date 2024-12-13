@@ -5,7 +5,7 @@ import (
 	handlers "findsafe/account/handlers/rtb_api"
 	"findsafe/account/models"
 	"findsafe/account/models/apperrors"
-	"findsafe/account/models/mocks"
+	mocks2 "findsafe/account/models/mocks/services"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
@@ -39,8 +39,8 @@ func TestGetTeam(t *testing.T) {
 
 		// Initialize the test fixture with the mock service
 		tf := &testFixture{
-			mockUserService: new(mocks.MockUserService),
-			mockTeamService: new(mocks.MockTeamService),
+			mockUserService: new(mocks2.MockUserService),
+			mockTeamService: new(mocks2.MockTeamService),
 		}
 		tf.setup()
 
@@ -79,8 +79,8 @@ func TestGetTeam(t *testing.T) {
 
 		// Initialize the test fixture with the mock service
 		tf := &testFixture{
-			mockUserService: new(mocks.MockUserService),
-			mockTeamService: new(mocks.MockTeamService),
+			mockUserService: new(mocks2.MockUserService),
+			mockTeamService: new(mocks2.MockTeamService),
 		}
 		tf.setup()
 
@@ -114,8 +114,8 @@ func TestGetTeam(t *testing.T) {
 
 		// Initialize the test fixture with the mock service
 		tf := &testFixture{
-			mockUserService: new(mocks.MockUserService),
-			mockTeamService: new(mocks.MockTeamService),
+			mockUserService: new(mocks2.MockUserService),
+			mockTeamService: new(mocks2.MockTeamService),
 		}
 		tf.setup()
 
@@ -174,8 +174,8 @@ func TestGetTeams(t *testing.T) {
 
 		// Initialize the test fixture with the mock service
 		tf := &testFixture{
-			mockUserService: new(mocks.MockUserService),
-			mockTeamService: new(mocks.MockTeamService),
+			mockUserService: new(mocks2.MockUserService),
+			mockTeamService: new(mocks2.MockTeamService),
 		}
 		tf.setup()
 
@@ -214,8 +214,8 @@ func TestGetTeams(t *testing.T) {
 
 		// Initialize the test fixture with the mock service
 		tf := &testFixture{
-			mockUserService: new(mocks.MockUserService),
-			mockTeamService: new(mocks.MockTeamService),
+			mockUserService: new(mocks2.MockUserService),
+			mockTeamService: new(mocks2.MockTeamService),
 		}
 		tf.setup()
 
@@ -249,8 +249,8 @@ func TestGetTeams(t *testing.T) {
 
 		// Initialize the test fixture with the mock service
 		tf := &testFixture{
-			mockUserService: new(mocks.MockUserService),
-			mockTeamService: new(mocks.MockTeamService),
+			mockUserService: new(mocks2.MockUserService),
+			mockTeamService: new(mocks2.MockTeamService),
 		}
 		tf.setup()
 
@@ -309,8 +309,8 @@ func TestGetUnassignedTeams(t *testing.T) {
 
 		// Initialize the test fixture with the mock service
 		tf := &testFixture{
-			mockUserService: new(mocks.MockUserService),
-			mockTeamService: new(mocks.MockTeamService),
+			mockUserService: new(mocks2.MockUserService),
+			mockTeamService: new(mocks2.MockTeamService),
 		}
 		tf.setup()
 
@@ -349,8 +349,8 @@ func TestGetUnassignedTeams(t *testing.T) {
 
 		// Initialize the test fixture with the mock service
 		tf := &testFixture{
-			mockUserService: new(mocks.MockUserService),
-			mockTeamService: new(mocks.MockTeamService),
+			mockUserService: new(mocks2.MockUserService),
+			mockTeamService: new(mocks2.MockTeamService),
 		}
 		tf.setup()
 
@@ -409,8 +409,8 @@ func TestGetSortieTeams(t *testing.T) {
 
 		// Initialize the test fixture with the mock service
 		tf := &testFixture{
-			mockUserService: new(mocks.MockUserService),
-			mockTeamService: new(mocks.MockTeamService),
+			mockUserService: new(mocks2.MockUserService),
+			mockTeamService: new(mocks2.MockTeamService),
 		}
 		tf.setup()
 
@@ -449,8 +449,8 @@ func TestGetSortieTeams(t *testing.T) {
 
 		// Initialize the test fixture with the mock service
 		tf := &testFixture{
-			mockUserService: new(mocks.MockUserService),
-			mockTeamService: new(mocks.MockTeamService),
+			mockUserService: new(mocks2.MockUserService),
+			mockTeamService: new(mocks2.MockTeamService),
 		}
 		tf.setup()
 
@@ -484,8 +484,8 @@ func TestGetSortieTeams(t *testing.T) {
 
 		// Initialize the test fixture with the mock service
 		tf := &testFixture{
-			mockUserService: new(mocks.MockUserService),
-			mockTeamService: new(mocks.MockTeamService),
+			mockUserService: new(mocks2.MockUserService),
+			mockTeamService: new(mocks2.MockTeamService),
 		}
 		tf.setup()
 

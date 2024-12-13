@@ -5,7 +5,7 @@ import (
 	handlers "findsafe/account/handlers/rtb_api"
 	"findsafe/account/models"
 	"findsafe/account/models/apperrors"
-	"findsafe/account/models/mocks"
+	mocks2 "findsafe/account/models/mocks/services"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
@@ -20,8 +20,9 @@ import (
 type testFixture struct {
 	router          *gin.Engine
 	rr              *httptest.ResponseRecorder
-	mockUserService *mocks.MockUserService
-	mockTeamService *mocks.MockTeamService
+	mockUserService *mocks2.MockUserService
+	mockTeamService *mocks2.MockTeamService
+	mockCertService *mocks2.MockCertService
 }
 
 func (tf *testFixture) setup() {
@@ -47,7 +48,7 @@ func TestMe(t *testing.T) {
 
 		// Initialize the test fixture with the mock service
 		tf := &testFixture{
-			mockUserService: new(mocks.MockUserService),
+			mockUserService: new(mocks2.MockUserService),
 		}
 		tf.setup()
 
@@ -82,8 +83,8 @@ func TestMe(t *testing.T) {
 
 	t.Run("NoContextUser", func(t *testing.T) {
 		tf := &testFixture{
-			mockUserService: new(mocks.MockUserService),
-			mockTeamService: new(mocks.MockTeamService),
+			mockUserService: new(mocks2.MockUserService),
+			mockTeamService: new(mocks2.MockTeamService),
 		}
 		tf.setup()
 
@@ -106,7 +107,7 @@ func TestMe(t *testing.T) {
 		uid, _ := uuid.NewRandom()
 
 		tf := &testFixture{
-			mockUserService: new(mocks.MockUserService),
+			mockUserService: new(mocks2.MockUserService),
 		}
 		tf.setup()
 
@@ -158,7 +159,7 @@ func TestGetUser(t *testing.T) {
 
 		// Initialize the test fixture with the mock service
 		tf := &testFixture{
-			mockUserService: new(mocks.MockUserService),
+			mockUserService: new(mocks2.MockUserService),
 		}
 		tf.setup()
 
@@ -193,7 +194,7 @@ func TestGetUser(t *testing.T) {
 
 	t.Run("BadUserID", func(t *testing.T) {
 		tf := &testFixture{
-			mockUserService: new(mocks.MockUserService),
+			mockUserService: new(mocks2.MockUserService),
 		}
 		tf.setup()
 
@@ -218,7 +219,7 @@ func TestGetUser(t *testing.T) {
 		uid, _ := uuid.NewRandom()
 
 		tf := &testFixture{
-			mockUserService: new(mocks.MockUserService),
+			mockUserService: new(mocks2.MockUserService),
 		}
 		tf.setup()
 
@@ -272,7 +273,7 @@ func TestGetUsersBySearch(t *testing.T) {
 
 		// Initialize the test fixture with the mock service
 		tf := &testFixture{
-			mockUserService: new(mocks.MockUserService),
+			mockUserService: new(mocks2.MockUserService),
 		}
 		tf.setup()
 
@@ -307,7 +308,7 @@ func TestGetUsersBySearch(t *testing.T) {
 
 	t.Run("NoContextUser", func(t *testing.T) {
 		tf := &testFixture{
-			mockUserService: new(mocks.MockUserService),
+			mockUserService: new(mocks2.MockUserService),
 		}
 		tf.setup()
 
@@ -332,7 +333,7 @@ func TestGetUsersBySearch(t *testing.T) {
 		uid, _ := uuid.NewRandom()
 
 		tf := &testFixture{
-			mockUserService: new(mocks.MockUserService),
+			mockUserService: new(mocks2.MockUserService),
 		}
 		tf.setup()
 
@@ -386,7 +387,7 @@ func TestGetUsersByOrg(t *testing.T) {
 
 		// Initialize the test fixture with the mock service
 		tf := &testFixture{
-			mockUserService: new(mocks.MockUserService),
+			mockUserService: new(mocks2.MockUserService),
 		}
 		tf.setup()
 
@@ -421,7 +422,7 @@ func TestGetUsersByOrg(t *testing.T) {
 
 	t.Run("NoContextUser", func(t *testing.T) {
 		tf := &testFixture{
-			mockUserService: new(mocks.MockUserService),
+			mockUserService: new(mocks2.MockUserService),
 		}
 		tf.setup()
 
@@ -446,7 +447,7 @@ func TestGetUsersByOrg(t *testing.T) {
 		uid, _ := uuid.NewRandom()
 
 		tf := &testFixture{
-			mockUserService: new(mocks.MockUserService),
+			mockUserService: new(mocks2.MockUserService),
 		}
 		tf.setup()
 
@@ -500,7 +501,7 @@ func TestGetUsersBySortie(t *testing.T) {
 
 		// Initialize the test fixture with the mock service
 		tf := &testFixture{
-			mockUserService: new(mocks.MockUserService),
+			mockUserService: new(mocks2.MockUserService),
 		}
 		tf.setup()
 
@@ -535,7 +536,7 @@ func TestGetUsersBySortie(t *testing.T) {
 
 	t.Run("BadUUID", func(t *testing.T) {
 		tf := &testFixture{
-			mockUserService: new(mocks.MockUserService),
+			mockUserService: new(mocks2.MockUserService),
 		}
 		tf.setup()
 
@@ -560,7 +561,7 @@ func TestGetUsersBySortie(t *testing.T) {
 		uid, _ := uuid.NewRandom()
 
 		tf := &testFixture{
-			mockUserService: new(mocks.MockUserService),
+			mockUserService: new(mocks2.MockUserService),
 		}
 		tf.setup()
 

@@ -3,7 +3,7 @@ package tests
 import (
 	"context"
 	"findsafe/account/models"
-	"findsafe/account/models/mocks"
+	"findsafe/account/models/mocks/repository"
 	"findsafe/account/services"
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
