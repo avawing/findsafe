@@ -2,8 +2,8 @@ package services
 
 import (
 	"context"
-	"findsafe/account/models"
 	"findsafe/account/models/interfaces"
+	"findsafe/account/models/models"
 	"github.com/google/uuid"
 )
 
@@ -22,13 +22,13 @@ func NewResourceService(c *USConfig) *ResourceService {
 }
 
 func (r *ResourceService) Get(c context.Context, uid uuid.UUID) (*models.Resource, error) {
-	return r.ResourceRepository.FindByID(c, uid)
+	return r.ResourceRepository.FindResourceByID(c, uid)
 }
-func (r *ResourceService) Update(c context.Context, uid uuid.UUID, user *models.Resource) error {
-	return r.ResourceRepository.Update(c, uid, user)
+func (r *ResourceService) Update(c context.Context, uid uuid.UUID, resource *models.Resource) error {
+	return r.ResourceRepository.UpdateResource(c, uid, resource)
 }
 func (r *ResourceService) Delete(c context.Context, uid uuid.UUID) error {
-	return r.ResourceRepository.Delete(c, uid)
+	return r.ResourceRepository.DeleteResource(c, uid)
 }
 func (r *ResourceService) GetByOwnerID(c context.Context, ownerID uuid.UUID) ([]*models.Resource, error) {
 	return r.ResourceRepository.FindByOwnerID(c, ownerID)

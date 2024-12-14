@@ -2,8 +2,8 @@ package tests
 
 import (
 	"context"
-	"findsafe/account/models"
 	mocks2 "findsafe/account/models/mocks/repository"
+	"findsafe/account/models/models"
 	"findsafe/account/services"
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
@@ -26,7 +26,7 @@ func TestResourceService(t *testing.T) {
 	t.Run("Test Get", func(t *testing.T) {
 		// Setting up the mock response
 		resource := &models.Resource{ID: testUID}
-		mockRepo.On("FindByID", mock.Anything, testUID).Return(resource, nil)
+		mockRepo.On("FindResourceByID", mock.Anything, testUID).Return(resource, nil)
 
 		// Calling the service method
 		result, err := service.Get(context.Background(), testUID)
@@ -37,11 +37,11 @@ func TestResourceService(t *testing.T) {
 		mockRepo.AssertExpectations(t)
 	})
 
-	t.Run("Test Update", func(t *testing.T) {
+	t.Run("Test UpdateResource", func(t *testing.T) {
 		resource := &models.Resource{ID: testUID}
-		mockRepo.On("Update", mock.Anything, testUID, resource).Return(nil)
+		mockRepo.On("UpdateResource", mock.Anything, testUID, resource).Return(nil)
 
-		// Call Update method
+		// Call UpdateResource method
 		err := service.Update(context.Background(), testUID, resource)
 
 		// Assertions
@@ -49,10 +49,10 @@ func TestResourceService(t *testing.T) {
 		mockRepo.AssertExpectations(t)
 	})
 
-	t.Run("Test Delete", func(t *testing.T) {
-		mockRepo.On("Delete", mock.Anything, testUID).Return(nil)
+	t.Run("Test DeleteResource", func(t *testing.T) {
+		mockRepo.On("DeleteResource", mock.Anything, testUID).Return(nil)
 
-		// Call Delete method
+		// Call DeleteResource method
 		err := service.Delete(context.Background(), testUID)
 
 		// Assertions

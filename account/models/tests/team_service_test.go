@@ -2,8 +2,8 @@ package tests
 
 import (
 	"context"
-	"findsafe/account/models"
 	"findsafe/account/models/mocks/repository"
+	"findsafe/account/models/models"
 	"findsafe/account/services"
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
@@ -22,7 +22,7 @@ func TestTeamService(t *testing.T) {
 
 	t.Run("Test Get", func(t *testing.T) {
 		team := &models.Team{ID: testUID}
-		mockRepo.On("FindByID", mock.Anything, testUID).Return(team, nil)
+		mockRepo.On("FindTeamByID", mock.Anything, testUID).Return(team, nil)
 
 		result, err := service.Get(context.Background(), testUID)
 
@@ -31,9 +31,9 @@ func TestTeamService(t *testing.T) {
 		mockRepo.AssertExpectations(t)
 	})
 
-	t.Run("Test Update", func(t *testing.T) {
+	t.Run("Test UpdateTeam", func(t *testing.T) {
 		team := &models.Team{ID: testUID}
-		mockRepo.On("Update", mock.Anything, testUID, team).Return(nil)
+		mockRepo.On("UpdateTeam", mock.Anything, testUID, team).Return(nil)
 
 		err := service.Update(context.Background(), testUID, team)
 
@@ -41,8 +41,8 @@ func TestTeamService(t *testing.T) {
 		mockRepo.AssertExpectations(t)
 	})
 
-	t.Run("Test Delete", func(t *testing.T) {
-		mockRepo.On("Delete", mock.Anything, testUID).Return(nil)
+	t.Run("Test DeleteTeam", func(t *testing.T) {
+		mockRepo.On("DeleteTeam", mock.Anything, testUID).Return(nil)
 
 		err := service.Delete(context.Background(), testUID)
 

@@ -3,9 +3,9 @@ package tests
 import (
 	"encoding/json"
 	handlers "findsafe/account/handlers/rtb_api"
-	"findsafe/account/models"
 	"findsafe/account/models/apperrors"
 	mocks2 "findsafe/account/models/mocks/services"
+	"findsafe/account/models/models"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"

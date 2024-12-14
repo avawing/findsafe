@@ -2,8 +2,8 @@ package services
 
 import (
 	"context"
-	"findsafe/account/models"
 	"findsafe/account/models/interfaces"
+	"findsafe/account/models/models"
 	"github.com/google/uuid"
 )
 
@@ -22,10 +22,10 @@ func NewSearchService(c *USConfig) *SearchService {
 }
 
 func (s *SearchService) Get(c context.Context, uid uuid.UUID) (*models.Searches, error) {
-	return s.SearchRepository.FindByID(c, uid)
+	return s.SearchRepository.FindBySearchID(c, uid)
 }
 func (s *SearchService) GetAll(c context.Context) ([]*models.Searches, error) {
-	return s.SearchRepository.FindAll(c)
+	return s.SearchRepository.FindAllSearches(c)
 }
 
 func (s *SearchService) GetAllBySubject(c context.Context, uid uuid.UUID) (*models.Searches, error) {
@@ -37,9 +37,9 @@ func (s *SearchService) GetAllByOrg(c context.Context, orgID uuid.UUID) ([]*mode
 }
 
 func (s *SearchService) Update(c context.Context, uid uuid.UUID, user *models.Searches) error {
-	return s.SearchRepository.Update(c, uid, user)
+	return s.SearchRepository.UpdateSearch(c, uid, user)
 }
 
 func (s *SearchService) Delete(c context.Context, uid uuid.UUID) error {
-	return s.SearchRepository.Delete(c, uid)
+	return s.SearchRepository.DeleteSearch(c, uid)
 }

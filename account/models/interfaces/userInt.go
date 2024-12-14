@@ -2,7 +2,7 @@ package interfaces
 
 import (
 	"context"
-	"findsafe/account/models"
+	"findsafe/account/models/models"
 	"github.com/google/uuid"
 )
 

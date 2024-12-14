@@ -1,9 +1,9 @@
 package handlers
 
 import (
-	"findsafe/account/models"
 	"findsafe/account/models/apperrors"
 	"findsafe/account/models/interfaces"
+	"findsafe/account/models/models"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	"log"

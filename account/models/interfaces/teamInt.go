@@ -2,7 +2,7 @@ package interfaces
 
 import (
 	"context"
-	"findsafe/account/models"
+	"findsafe/account/models/models"
 	"github.com/google/uuid"
 )
 
@@ -20,9 +20,9 @@ type TeamService interface {
 // TeamRepository defines methods the service layer expects
 // any repository it interacts with to implement
 type TeamRepository interface {
-	FindByID(c context.Context, uid uuid.UUID) (*models.Team, error)
-	Update(c context.Context, uid uuid.UUID, user *models.Team) error
-	Delete(c context.Context, uid uuid.UUID) error
+	FindTeamByID(c context.Context, uid uuid.UUID) (*models.Team, error)
+	UpdateTeam(c context.Context, uid uuid.UUID, user *models.Team) error
+	DeleteTeam(c context.Context, uid uuid.UUID) error
 	FindBySearch(c context.Context, uid uuid.UUID) ([]*models.Team, error)
 	FindByEmptySortie(c context.Context) ([]*models.Team, error)
 	FindBySortie(c context.Context, uid uuid.UUID) (*models.Team, error)

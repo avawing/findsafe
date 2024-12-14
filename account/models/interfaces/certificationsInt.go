@@ -2,7 +2,7 @@ package interfaces
 
 import (
 	"context"
-	"findsafe/account/models"
+	"findsafe/account/models/models"
 	"github.com/google/uuid"
 )
 
@@ -19,9 +19,9 @@ type CertService interface {
 // CertRepository defines methods the service layer expects
 // any repository it interacts with to implement
 type CertRepository interface {
-	FindByID(c context.Context, uid uuid.UUID) (*models.Certification, error)
-	Update(c context.Context, uid uuid.UUID, user *models.Certification) error
-	Delete(c context.Context, uid uuid.UUID) error
+	FindByCertID(c context.Context, uid uuid.UUID) (*models.Certification, error)
+	UpdateCert(c context.Context, uid uuid.UUID, user *models.Certification) error
+	DeleteByCertID(c context.Context, uid uuid.UUID) error
 	FindByUserID(c context.Context, uid uuid.UUID) ([]*models.Certification, error)
 	FindByAccreditingOrg(c context.Context, org uuid.UUID) ([]*models.Certification, error)
 }

@@ -2,8 +2,8 @@ package tests
 
 import (
 	"context"
-	"findsafe/account/models"
 	"findsafe/account/models/mocks/repository"
+	"findsafe/account/models/models"
 	"findsafe/account/services"
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
@@ -20,7 +20,7 @@ func TestUserService(t *testing.T) {
 		uid := uuid.New()
 		expectedUser := &models.User{ID: uid, FirstName: "John", LastName: "Doe"}
 
-		// Mock the FindByID method to return a user
+		// Mock the FindByCertID method to return a user
 		mockRepo.On("FindByID", mock.Anything, uid).Return(expectedUser, nil)
 
 		// Call the Get method
@@ -30,11 +30,11 @@ func TestUserService(t *testing.T) {
 		assert.NoError(t, err)
 		assert.Equal(t, expectedUser, user)
 
-		// Assert that the FindByID method was called with the correct arguments
+		// Assert that the FindByCertID method was called with the correct arguments
 		mockRepo.AssertExpectations(t)
 	})
 
-	t.Run("Update User", func(t *testing.T) {
+	t.Run("UpdateUser User", func(t *testing.T) {
 		// Create a mock repository
 		mockRepo := new(mocks.MockUserRepository)
 		userService := services.NewUserService(&services.USConfig{UserRepository: mockRepo})
@@ -42,36 +42,36 @@ func TestUserService(t *testing.T) {
 		uid := uuid.New()
 		userToUpdate := &models.User{ID: uid, FirstName: "John", LastName: "Doe"}
 
-		// Mock the Update method
+		// Mock the UpdateUser method
 		mockRepo.On("Update", mock.Anything, uid, userToUpdate).Return(nil)
 
-		// Call the Update method
+		// Call the UpdateUser method
 		err := userService.Update(context.Background(), uid, userToUpdate)
 
 		// Assert the results
 		assert.NoError(t, err)
 
-		// Assert that the Update method was called with the correct arguments
+		// Assert that the UpdateUser method was called with the correct arguments
 		mockRepo.AssertExpectations(t)
 	})
 
-	t.Run("Delete User", func(t *testing.T) {
+	t.Run("DeleteUser User", func(t *testing.T) {
 		// Create a mock repository
 		mockRepo := new(mocks.MockUserRepository)
 		userService := services.NewUserService(&services.USConfig{UserRepository: mockRepo})
 
 		uid := uuid.New()
 
-		// Mock the Delete method
+		// Mock the DeleteUser method
 		mockRepo.On("Delete", mock.Anything, uid).Return(nil)
 
-		// Call the Delete method
+		// Call the DeleteUser method
 		err := userService.Delete(context.Background(), uid)
 
 		// Assert the results
 		assert.NoError(t, err)
 
-		// Assert that the Delete method was called with the correct arguments
+		// Assert that the DeleteUser method was called with the correct arguments
 		mockRepo.AssertExpectations(t)
 	})
 
@@ -111,7 +111,7 @@ func TestUserService(t *testing.T) {
 			{ID: uuid.New(), FirstName: "Jane", LastName: "Doe"},
 		}
 
-		// Mock the FindBySearchID method
+		// Mock the FindUsersBySearchID method
 		mockRepo.On("FindBySearchID", mock.Anything, searchID).Return(expectedUsers, nil)
 
 		// Call the GetAllinSearch method
@@ -121,7 +121,7 @@ func TestUserService(t *testing.T) {
 		assert.NoError(t, err)
 		assert.Equal(t, expectedUsers, users)
 
-		// Assert that the FindBySearchID method was called with the correct arguments
+		// Assert that the FindUsersBySearchID method was called with the correct arguments
 		mockRepo.AssertExpectations(t)
 	})
 

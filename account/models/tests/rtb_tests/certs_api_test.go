@@ -3,9 +3,9 @@ package tests
 import (
 	"encoding/json"
 	handlers "findsafe/account/handlers/rtb_api"
-	"findsafe/account/models"
 	"findsafe/account/models/apperrors"
 	mocks2 "findsafe/account/models/mocks/services"
+	models2 "findsafe/account/models/models"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
@@ -21,7 +21,7 @@ func TestGetCertifications(t *testing.T) {
 	t.Run("Success", func(t *testing.T) {
 		uid, _ := uuid.NewRandom()
 
-		mockTeamResp := []*models.Certification{{
+		mockTeamResp := []*models2.Certification{{
 			Model: gorm.Model{},
 			ID:    uid,
 			Name:  "TEST_CERTIFICATE",
@@ -39,7 +39,7 @@ func TestGetCertifications(t *testing.T) {
 		tf.mockCertService.On("GetByUserID", mock.AnythingOfType("*gin.Context"), uid).Return(mockTeamResp, nil)
 
 		tf.router.Use(func(c *gin.Context) {
-			c.Set("certifications", &models.User{
+			c.Set("certifications", &models2.User{
 				ID: uid,
 			})
 		})
@@ -78,7 +78,7 @@ func TestGetCertifications(t *testing.T) {
 		tf.setup()
 
 		tf.router.Use(func(c *gin.Context) {
-			c.Set("user", &models.User{
+			c.Set("user", &models2.User{
 				ID: uid,
 			})
 		})
@@ -115,10 +115,10 @@ func TestGetCertifications(t *testing.T) {
 		tf.setup()
 
 		// Use the mock directly from the fixture
-		tf.mockCertService.On("GetByUserID", mock.AnythingOfType("*gin.Context"), uid).Return([]*models.Certification{}, fmt.Errorf("some error"))
+		tf.mockCertService.On("GetByUserID", mock.AnythingOfType("*gin.Context"), uid).Return([]*models2.Certification{}, fmt.Errorf("some error"))
 
 		tf.router.Use(func(c *gin.Context) {
-			c.Set("user", &models.User{
+			c.Set("user", &models2.User{
 				ID: uid,
 			})
 		})
@@ -152,7 +152,7 @@ func TestGetCertification(t *testing.T) {
 	t.Run("Success", func(t *testing.T) {
 		uid, _ := uuid.NewRandom()
 
-		mockTeamResp := &models.Certification{
+		mockTeamResp := &models2.Certification{
 			Model: gorm.Model{},
 			ID:    uid,
 			Name:  "TEST_CERTIFICATE",
@@ -170,7 +170,7 @@ func TestGetCertification(t *testing.T) {
 		tf.mockCertService.On("Get", mock.AnythingOfType("*gin.Context"), uid).Return(mockTeamResp, nil)
 
 		tf.router.Use(func(c *gin.Context) {
-			c.Set("certifications", &models.User{
+			c.Set("certifications", &models2.User{
 				ID: uid,
 			})
 		})
@@ -209,7 +209,7 @@ func TestGetCertification(t *testing.T) {
 		tf.setup()
 
 		tf.router.Use(func(c *gin.Context) {
-			c.Set("user", &models.User{
+			c.Set("user", &models2.User{
 				ID: uid,
 			})
 		})
@@ -246,10 +246,10 @@ func TestGetCertification(t *testing.T) {
 		tf.setup()
 
 		// Use the mock directly from the fixture
-		tf.mockCertService.On("Get", mock.AnythingOfType("*gin.Context"), uid).Return(&models.Certification{}, fmt.Errorf("some error"))
+		tf.mockCertService.On("Get", mock.AnythingOfType("*gin.Context"), uid).Return(&models2.Certification{}, fmt.Errorf("some error"))
 
 		tf.router.Use(func(c *gin.Context) {
-			c.Set("user", &models.User{
+			c.Set("user", &models2.User{
 				ID: uid,
 			})
 		})

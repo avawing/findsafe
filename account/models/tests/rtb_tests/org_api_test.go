@@ -3,9 +3,9 @@ package tests
 import (
 	"encoding/json"
 	handlers "findsafe/account/handlers/rtb_api"
-	"findsafe/account/models"
 	"findsafe/account/models/apperrors"
 	mocks2 "findsafe/account/models/mocks/services"
+	models2 "findsafe/account/models/models"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
@@ -41,7 +41,7 @@ func TestGetOrgs(t *testing.T) {
 	t.Run("Success", func(t *testing.T) {
 		uid, _ := uuid.NewRandom()
 
-		mockOrgResp := []*models.Organization{{
+		mockOrgResp := []*models2.Organization{{
 			ID:   uid,
 			Name: "Test Org",
 		}}
@@ -88,7 +88,7 @@ func TestGetOrgs(t *testing.T) {
 			OrgService: tf.mockOrgService,
 		})
 		// Setup mock to return an error
-		tf.mockOrgService.On("GetAll", mock.Anything).Return([]*models.Organization{}, fmt.Errorf("not found"))
+		tf.mockOrgService.On("GetAll", mock.Anything).Return([]*models2.Organization{}, fmt.Errorf("not found"))
 
 		// Create request
 		request, err := http.NewRequest(http.MethodGet, "/organizations/", nil)
@@ -116,7 +116,7 @@ func TestGetOrgsInSearch(t *testing.T) {
 	t.Run("Success", func(t *testing.T) {
 		uid, _ := uuid.NewRandom()
 
-		mockOrgResp := []*models.Organization{{
+		mockOrgResp := []*models2.Organization{{
 			ID:   uid,
 			Name: "Test Org",
 		}}
@@ -197,7 +197,7 @@ func TestGetOrgsInSearch(t *testing.T) {
 			OrgService: tf.mockOrgService,
 		})
 		// Setup mock to return an error
-		tf.mockOrgService.On("GetAllInSearch", mock.Anything, uid).Return([]*models.Organization{}, fmt.Errorf("not found"))
+		tf.mockOrgService.On("GetAllInSearch", mock.Anything, uid).Return([]*models2.Organization{}, fmt.Errorf("not found"))
 
 		// Create request
 		request, err := http.NewRequest(http.MethodGet, fmt.Sprintf("/organizations/search/%s", uid), nil)
@@ -225,7 +225,7 @@ func TestGetOrg(t *testing.T) {
 	t.Run("Success", func(t *testing.T) {
 		uid, _ := uuid.NewRandom()
 
-		mockOrgResp := &models.Organization{
+		mockOrgResp := &models2.Organization{
 			ID:   uid,
 			Name: "Test Org",
 		}
@@ -306,7 +306,7 @@ func TestGetOrg(t *testing.T) {
 			OrgService: tf.mockOrgService,
 		})
 		// Setup mock to return an error
-		tf.mockOrgService.On("Get", mock.Anything, uid).Return(&models.Organization{}, fmt.Errorf("not found"))
+		tf.mockOrgService.On("Get", mock.Anything, uid).Return(&models2.Organization{}, fmt.Errorf("not found"))
 
 		// Create request
 		request, err := http.NewRequest(http.MethodGet, fmt.Sprintf("/organizations/%s", uid), nil)
@@ -334,7 +334,7 @@ func TestGetOrgCertifications(t *testing.T) {
 	t.Run("Success", func(t *testing.T) {
 		uid, _ := uuid.NewRandom()
 
-		mockOrgResp := []*models.Certification{{
+		mockOrgResp := []*models2.Certification{{
 			ID:   uid,
 			Name: "Test Org",
 		}}
@@ -421,7 +421,7 @@ func TestGetOrgCertifications(t *testing.T) {
 			CertService: tf.mockCertService,
 		})
 		// Setup mock to return an error
-		tf.mockCertService.On("GetByAccreditingOrg", mock.Anything, uid).Return([]*models.Certification{}, fmt.Errorf("not found"))
+		tf.mockCertService.On("GetByAccreditingOrg", mock.Anything, uid).Return([]*models2.Certification{}, fmt.Errorf("not found"))
 
 		// Create request
 		request, err := http.NewRequest(http.MethodGet, fmt.Sprintf("/organizations/%s/certifications", uid), nil)

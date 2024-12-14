@@ -2,8 +2,8 @@ package services
 
 import (
 	"context"
-	"findsafe/account/models"
 	"findsafe/account/models/interfaces"
+	"findsafe/account/models/models"
 	"github.com/google/uuid"
 )
 
@@ -22,13 +22,13 @@ func NewCertService(c *USConfig) *CertService {
 }
 
 func (s *CertService) Get(c context.Context, uid uuid.UUID) (*models.Certification, error) {
-	return s.CertRepository.FindByID(c, uid)
+	return s.CertRepository.FindByCertID(c, uid)
 }
 func (s *CertService) Update(c context.Context, uid uuid.UUID, user *models.Certification) error {
-	return s.CertRepository.Update(c, uid, user)
+	return s.CertRepository.UpdateCert(c, uid, user)
 }
 func (s *CertService) Delete(c context.Context, uid uuid.UUID) error {
-	return s.CertRepository.Delete(c, uid)
+	return s.CertRepository.DeleteByCertID(c, uid)
 }
 func (s *CertService) GetByUserID(c context.Context, uid uuid.UUID) ([]*models.Certification, error) {
 	return s.CertRepository.FindByUserID(c, uid)

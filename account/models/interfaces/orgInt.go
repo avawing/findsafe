@@ -2,7 +2,7 @@ package interfaces
 
 import (
 	"context"
-	"findsafe/account/models"
+	"findsafe/account/models/models"
 	"github.com/google/uuid"
 )
 
@@ -19,9 +19,9 @@ type OrgService interface {
 // OrgRepository defines methods the service layer expects
 // any repository it interacts with to implement
 type OrgRepository interface {
-	FindByID(c context.Context, uid uuid.UUID) (*models.Organization, error)
-	FindAll(c context.Context) ([]*models.Organization, error)
+	FindOrgByID(c context.Context, uid uuid.UUID) (*models.Organization, error)
+	FindAllOrgs(c context.Context) ([]*models.Organization, error)
 	FindAllInSearch(c context.Context, uid uuid.UUID) ([]*models.Organization, error)
-	Update(c context.Context, uid uuid.UUID, user *models.Organization) error
-	Delete(c context.Context, uid uuid.UUID) error
+	UpdateOrg(c context.Context, uid uuid.UUID, user *models.Organization) error
+	DeleteOrg(c context.Context, uid uuid.UUID) error
 }

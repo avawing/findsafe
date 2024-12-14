@@ -2,7 +2,7 @@ package mocks
 
 import (
 	"context"
-	"findsafe/account/models"
+	"findsafe/account/models/models"
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/mock"
 )
@@ -11,17 +11,17 @@ type MockResourceRepository struct {
 	mock.Mock
 }
 
-func (m *MockResourceRepository) FindByID(c context.Context, uid uuid.UUID) (*models.Resource, error) {
+func (m *MockResourceRepository) FindResourceByID(c context.Context, uid uuid.UUID) (*models.Resource, error) {
 	args := m.Called(c, uid)
 	return args.Get(0).(*models.Resource), args.Error(1)
 }
 
-func (m *MockResourceRepository) Update(c context.Context, uid uuid.UUID, user *models.Resource) error {
+func (m *MockResourceRepository) UpdateResource(c context.Context, uid uuid.UUID, user *models.Resource) error {
 	args := m.Called(c, uid, user)
 	return args.Error(0)
 }
 
-func (m *MockResourceRepository) Delete(c context.Context, uid uuid.UUID) error {
+func (m *MockResourceRepository) DeleteResource(c context.Context, uid uuid.UUID) error {
 	args := m.Called(c, uid)
 	return args.Error(0)
 }

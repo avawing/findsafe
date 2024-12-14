@@ -2,16 +2,10 @@ package services
 
 import (
 	"context"
-	"findsafe/account/models"
 	"findsafe/account/models/interfaces"
+	"findsafe/account/models/models"
 	"github.com/google/uuid"
 )
-
-// UserService acts as a struct for injecting an implementation of UserRepository
-// for use in service methods.
-type UserService struct {
-	UserRepository interfaces.UserRepository
-}
 
 // USConfig will hold repositories that will eventually be injected into
 // this service layer.
@@ -21,6 +15,12 @@ type USConfig struct {
 	ResourceRepository interfaces.ResourceRepository
 	CertRepository     interfaces.CertRepository
 	SearchRepository   interfaces.SearchRepository
+}
+
+// UserService acts as a struct for injecting an implementation of UserRepository
+// for use in service methods.
+type UserService struct {
+	UserRepository interfaces.UserRepository
 }
 
 // NewUserService is a factory function for initializing a UserService with

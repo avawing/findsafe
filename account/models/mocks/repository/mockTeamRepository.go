@@ -2,7 +2,7 @@ package mocks
 
 import (
 	"context"
-	"findsafe/account/models"
+	"findsafe/account/models/models"
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/mock"
 )
@@ -11,15 +11,15 @@ type MockTeamRepository struct {
 	mock.Mock
 }
 
-func (m *MockTeamRepository) FindByID(c context.Context, uid uuid.UUID) (*models.Team, error) {
+func (m *MockTeamRepository) FindTeamByID(c context.Context, uid uuid.UUID) (*models.Team, error) {
 	ret := m.Called(c, uid)
 	return ret.Get(0).(*models.Team), ret.Error(1)
 }
-func (m *MockTeamRepository) Update(c context.Context, uid uuid.UUID, user *models.Team) error {
+func (m *MockTeamRepository) UpdateTeam(c context.Context, uid uuid.UUID, user *models.Team) error {
 	ret := m.Called(c, uid, user)
 	return ret.Error(0)
 }
-func (m *MockTeamRepository) Delete(c context.Context, uid uuid.UUID) error {
+func (m *MockTeamRepository) DeleteTeam(c context.Context, uid uuid.UUID) error {
 	ret := m.Called(c, uid)
 	return ret.Error(0)
 }

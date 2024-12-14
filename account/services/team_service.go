@@ -2,8 +2,8 @@ package services
 
 import (
 	"context"
-	"findsafe/account/models"
 	"findsafe/account/models/interfaces"
+	"findsafe/account/models/models"
 	"github.com/google/uuid"
 )
 
@@ -22,15 +22,15 @@ func NewTeamService(c *USConfig) *TeamService {
 }
 
 func (t *TeamService) Get(c context.Context, uid uuid.UUID) (*models.Team, error) {
-	return t.TeamRepository.FindByID(c, uid)
+	return t.TeamRepository.FindTeamByID(c, uid)
 }
 
 func (t *TeamService) Update(c context.Context, uid uuid.UUID, user *models.Team) error {
-	return t.TeamRepository.Update(c, uid, user)
+	return t.TeamRepository.UpdateTeam(c, uid, user)
 }
 
 func (t *TeamService) Delete(c context.Context, uid uuid.UUID) error {
-	return t.TeamRepository.Delete(c, uid)
+	return t.TeamRepository.DeleteTeam(c, uid)
 }
 
 func (t *TeamService) GetAllinSearch(c context.Context, uid uuid.UUID) ([]*models.Team, error) {

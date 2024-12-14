@@ -3,9 +3,9 @@ package tests
 import (
 	"encoding/json"
 	handlers "findsafe/account/handlers/rtb_api"
-	"findsafe/account/models"
 	"findsafe/account/models/apperrors"
 	mocks2 "findsafe/account/models/mocks/services"
+	models2 "findsafe/account/models/models"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
@@ -21,14 +21,14 @@ func TestGetTeam(t *testing.T) {
 	t.Run("Success", func(t *testing.T) {
 		uid, _ := uuid.NewRandom()
 
-		mockTeamResp := &models.Team{
+		mockTeamResp := &models2.Team{
 			Model:          gorm.Model{},
 			ID:             uid,
 			Name:           "ALPHA_TEAM",
 			CurrentLat:     nil,
 			CurrentLng:     nil,
 			TeamLeadID:     uuid.UUID{},
-			TeamLead:       models.User{},
+			TeamLead:       models2.User{},
 			ActiveSortie:   nil,
 			ActiveSearchID: uuid.UUID{},
 		}
@@ -44,7 +44,7 @@ func TestGetTeam(t *testing.T) {
 		tf.mockTeamService.On("Get", mock.AnythingOfType("*gin.Context"), uid).Return(mockTeamResp, nil)
 
 		tf.router.Use(func(c *gin.Context) {
-			c.Set("user", &models.User{
+			c.Set("user", &models2.User{
 				ID: uid,
 			})
 		})
@@ -81,7 +81,7 @@ func TestGetTeam(t *testing.T) {
 		tf.setup()
 
 		tf.router.Use(func(c *gin.Context) {
-			c.Set("user", &models.User{
+			c.Set("user", &models2.User{
 				ID: uid,
 			})
 		})
@@ -116,10 +116,10 @@ func TestGetTeam(t *testing.T) {
 		tf.setup()
 
 		// Use the mock directly from the fixture
-		tf.mockTeamService.On("Get", mock.AnythingOfType("*gin.Context"), uid).Return(&models.Team{}, fmt.Errorf("downstream error"))
+		tf.mockTeamService.On("Get", mock.AnythingOfType("*gin.Context"), uid).Return(&models2.Team{}, fmt.Errorf("downstream error"))
 
 		tf.router.Use(func(c *gin.Context) {
-			c.Set("user", &models.User{
+			c.Set("user", &models2.User{
 				ID: uid,
 			})
 		})
@@ -152,14 +152,14 @@ func TestGetTeams(t *testing.T) {
 	t.Run("Success", func(t *testing.T) {
 		uid, _ := uuid.NewRandom()
 
-		mockTeamResp := []*models.Team{{
+		mockTeamResp := []*models2.Team{{
 			Model:          gorm.Model{},
 			ID:             uid,
 			Name:           "ALPHA_TEAM",
 			CurrentLat:     nil,
 			CurrentLng:     nil,
 			TeamLeadID:     uuid.UUID{},
-			TeamLead:       models.User{},
+			TeamLead:       models2.User{},
 			ActiveSortie:   nil,
 			ActiveSearchID: uuid.UUID{},
 		}}
@@ -175,7 +175,7 @@ func TestGetTeams(t *testing.T) {
 		tf.mockTeamService.On("GetAllinSearch", mock.AnythingOfType("*gin.Context"), uid).Return(mockTeamResp, nil)
 
 		tf.router.Use(func(c *gin.Context) {
-			c.Set("user", &models.User{
+			c.Set("user", &models2.User{
 				ID: uid,
 			})
 		})
@@ -212,7 +212,7 @@ func TestGetTeams(t *testing.T) {
 		tf.setup()
 
 		tf.router.Use(func(c *gin.Context) {
-			c.Set("user", &models.User{
+			c.Set("user", &models2.User{
 				ID: uid,
 			})
 		})
@@ -247,10 +247,10 @@ func TestGetTeams(t *testing.T) {
 		tf.setup()
 
 		// Use the mock directly from the fixture
-		tf.mockTeamService.On("GetAllinSearch", mock.AnythingOfType("*gin.Context"), uid).Return([]*models.Team{}, fmt.Errorf("downstream error"))
+		tf.mockTeamService.On("GetAllinSearch", mock.AnythingOfType("*gin.Context"), uid).Return([]*models2.Team{}, fmt.Errorf("downstream error"))
 
 		tf.router.Use(func(c *gin.Context) {
-			c.Set("user", &models.User{
+			c.Set("user", &models2.User{
 				ID: uid,
 			})
 		})
@@ -283,14 +283,14 @@ func TestGetUnassignedTeams(t *testing.T) {
 	t.Run("Success", func(t *testing.T) {
 		uid, _ := uuid.NewRandom()
 
-		mockTeamResp := []*models.Team{{
+		mockTeamResp := []*models2.Team{{
 			Model:          gorm.Model{},
 			ID:             uid,
 			Name:           "ALPHA_TEAM",
 			CurrentLat:     nil,
 			CurrentLng:     nil,
 			TeamLeadID:     uuid.UUID{},
-			TeamLead:       models.User{},
+			TeamLead:       models2.User{},
 			ActiveSortie:   nil,
 			ActiveSearchID: uuid.UUID{},
 		}}
@@ -306,7 +306,7 @@ func TestGetUnassignedTeams(t *testing.T) {
 		tf.mockTeamService.On("GetAllWithoutSortie", mock.AnythingOfType("*gin.Context")).Return(mockTeamResp, nil)
 
 		tf.router.Use(func(c *gin.Context) {
-			c.Set("user", &models.User{
+			c.Set("user", &models2.User{
 				ID: uid,
 			})
 		})
@@ -343,10 +343,10 @@ func TestGetUnassignedTeams(t *testing.T) {
 		tf.setup()
 
 		// Use the mock directly from the fixture
-		tf.mockTeamService.On("GetAllWithoutSortie", mock.AnythingOfType("*gin.Context")).Return([]*models.Team{}, fmt.Errorf("downstream error"))
+		tf.mockTeamService.On("GetAllWithoutSortie", mock.AnythingOfType("*gin.Context")).Return([]*models2.Team{}, fmt.Errorf("downstream error"))
 
 		tf.router.Use(func(c *gin.Context) {
-			c.Set("user", &models.User{
+			c.Set("user", &models2.User{
 				ID: uid,
 			})
 		})
@@ -379,14 +379,14 @@ func TestGetSortieTeams(t *testing.T) {
 	t.Run("Success", func(t *testing.T) {
 		uid, _ := uuid.NewRandom()
 
-		mockTeamResp := &models.Team{
+		mockTeamResp := &models2.Team{
 			Model:          gorm.Model{},
 			ID:             uid,
 			Name:           "ALPHA_TEAM",
 			CurrentLat:     nil,
 			CurrentLng:     nil,
 			TeamLeadID:     uuid.UUID{},
-			TeamLead:       models.User{},
+			TeamLead:       models2.User{},
 			ActiveSortie:   nil,
 			ActiveSearchID: uuid.UUID{},
 		}
@@ -402,7 +402,7 @@ func TestGetSortieTeams(t *testing.T) {
 		tf.mockTeamService.On("GetBySortie", mock.AnythingOfType("*gin.Context"), uid).Return(mockTeamResp, nil)
 
 		tf.router.Use(func(c *gin.Context) {
-			c.Set("user", &models.User{
+			c.Set("user", &models2.User{
 				ID: uid,
 			})
 		})
@@ -439,7 +439,7 @@ func TestGetSortieTeams(t *testing.T) {
 		tf.setup()
 
 		tf.router.Use(func(c *gin.Context) {
-			c.Set("user", &models.User{
+			c.Set("user", &models2.User{
 				ID: uid,
 			})
 		})
@@ -474,10 +474,10 @@ func TestGetSortieTeams(t *testing.T) {
 		tf.setup()
 
 		// Use the mock directly from the fixture
-		tf.mockTeamService.On("GetBySortie", mock.AnythingOfType("*gin.Context"), uid).Return(&models.Team{}, fmt.Errorf("downstream error"))
+		tf.mockTeamService.On("GetBySortie", mock.AnythingOfType("*gin.Context"), uid).Return(&models2.Team{}, fmt.Errorf("downstream error"))
 
 		tf.router.Use(func(c *gin.Context) {
-			c.Set("user", &models.User{
+			c.Set("user", &models2.User{
 				ID: uid,
 			})
 		})

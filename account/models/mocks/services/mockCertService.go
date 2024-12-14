@@ -2,7 +2,7 @@ package mocks
 
 import (
 	"context"
-	"findsafe/account/models"
+	"findsafe/account/models/models"
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/mock"
 )

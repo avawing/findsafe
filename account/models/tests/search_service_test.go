@@ -2,8 +2,8 @@ package tests
 
 import (
 	"context"
-	"findsafe/account/models"
 	mocks "findsafe/account/models/mocks/repository"
+	"findsafe/account/models/models"
 	"findsafe/account/services"
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
@@ -25,7 +25,7 @@ func TestSearchService(t *testing.T) {
 	t.Run("Test Get", func(t *testing.T) {
 		// Setting up the mock response
 		search := &models.Searches{ID: testUID}
-		mockRepo.On("FindByID", mock.Anything, testUID).Return(search, nil)
+		mockRepo.On("FindBySearchID", mock.Anything, testUID).Return(search, nil)
 
 		// Calling the service method
 		result, err := service.Get(context.Background(), testUID)
@@ -39,7 +39,7 @@ func TestSearchService(t *testing.T) {
 	t.Run("Test GetAll", func(t *testing.T) {
 		// Setting up the mock response
 		search := &models.Searches{ID: testUID}
-		mockRepo.On("FindAll", mock.Anything).Return([]*models.Searches{search}, nil)
+		mockRepo.On("FindAllSearches", mock.Anything).Return([]*models.Searches{search}, nil)
 
 		// Calling the service method
 		result, err := service.GetAll(context.Background())
@@ -80,10 +80,10 @@ func TestSearchService(t *testing.T) {
 		mockRepo.AssertExpectations(t)
 	})
 
-	t.Run("Test Update", func(t *testing.T) {
+	t.Run("Test UpdateSearch", func(t *testing.T) {
 		// Setting up the mock response
 		search := &models.Searches{ID: testUID}
-		mockRepo.On("Update", mock.Anything, testUID, search).Return(nil)
+		mockRepo.On("UpdateSearch", mock.Anything, testUID, search).Return(nil)
 
 		// Calling the service method
 		err := service.Update(context.Background(), testUID, search)
@@ -93,9 +93,9 @@ func TestSearchService(t *testing.T) {
 		mockRepo.AssertExpectations(t)
 	})
 
-	t.Run("Test Delete", func(t *testing.T) {
+	t.Run("Test DeleteSearch", func(t *testing.T) {
 		// Setting up the mock response
-		mockRepo.On("Delete", mock.Anything, testUID).Return(nil)
+		mockRepo.On("DeleteSearch", mock.Anything, testUID).Return(nil)
 
 		// Calling the service method
 		err := service.Delete(context.Background(), testUID)
