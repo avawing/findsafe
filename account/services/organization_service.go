@@ -25,3 +25,7 @@ func (o *OrgService) Delete(c context.Context, uid uuid.UUID) error {
 func (o *OrgService) GetAll(c context.Context) ([]*models.Organization, error) {
 	return o.OrgRepository.FindAll(c)
 }
+
+func (o *OrgService) GetAllInSearch(c context.Context, uid uuid.UUID) ([]*models.Organization, error) {
+	return o.OrgRepository.FindAllInSearch(c, uid)
+}

@@ -71,4 +71,20 @@ func TestOrgService(t *testing.T) {
 		assert.Equal(t, org, result[0]) // Ensure the returned org is the same
 		mockRepo.AssertExpectations(t)
 	})
+
+	t.Run("Test GetAllInSearch", func(t *testing.T) {
+		uid := uuid.New()
+		org := &models.Organization{ID: testUID}
+		mockRepo.On("FindAllInSearch", mock.Anything, uid).Return([]*models.Organization{org}, nil)
+
+		// Calling GetAll method
+		result, err := service.GetAllInSearch(context.Background(), uid)
+
+		// Assertions
+		assert.NoError(t, err)
+		assert.Len(t, result, 1)        // Ensure that exactly 1 result is returned
+		assert.Equal(t, org, result[0]) // Ensure the returned org is the same
+		mockRepo.AssertExpectations(t)
+	})
+
 }

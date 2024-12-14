@@ -14,7 +14,9 @@ type Certification struct {
 	DateGranted      time.Time `gorm:"not null"`
 	ExpirationDate   time.Time `gorm:"not null"`
 	UserID           uuid.UUID
-	User             User      `gorm:"notnull;foreignKey:UserID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
-	AccreditingOrgID uuid.UUID // TODO: Certifications Offered by Organizations (I.E. NASAR) for USERS
-	OfferedByOrgID   uuid.UUID // This is for Organizations to list the Certifications they offer
+	User             User         `gorm:"notnull;foreignKey:UserID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
+	AccreditingOrgID uuid.UUID    // TODO: Certifications Offered by Organizations (I.E. NASAR) for USERS
+	AccreditingOrg   Organization `gorm:"notnull;foreignKey:OrganizationID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
+	OfferedByOrgID   uuid.UUID
+	OfferedByOrg     Organization `gorm:"notnull;foreignKey:OrganizationID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
 }

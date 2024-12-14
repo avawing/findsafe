@@ -11,6 +11,7 @@ import (
 type OrgService interface {
 	GetAll(c context.Context) ([]*models.Organization, error)
 	Get(c context.Context, uid uuid.UUID) (*models.Organization, error)
+	GetAllInSearch(c context.Context, uid uuid.UUID) ([]*models.Organization, error)
 	Update(c context.Context, uid uuid.UUID, user *models.Organization) error
 	Delete(c context.Context, uid uuid.UUID) error
 }
@@ -20,6 +21,7 @@ type OrgService interface {
 type OrgRepository interface {
 	FindByID(c context.Context, uid uuid.UUID) (*models.Organization, error)
 	FindAll(c context.Context) ([]*models.Organization, error)
+	FindAllInSearch(c context.Context, uid uuid.UUID) ([]*models.Organization, error)
 	Update(c context.Context, uid uuid.UUID, user *models.Organization) error
 	Delete(c context.Context, uid uuid.UUID) error
 }

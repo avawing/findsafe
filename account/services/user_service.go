@@ -20,6 +20,7 @@ type USConfig struct {
 	TeamRepository     interfaces.TeamRepository
 	ResourceRepository interfaces.ResourceRepository
 	CertRepository     interfaces.CertRepository
+	SearchRepository   interfaces.SearchRepository
 }
 
 // NewUserService is a factory function for initializing a UserService with

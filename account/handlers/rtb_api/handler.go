@@ -12,22 +12,24 @@ import (
 
 // Handler struct holds required services for handler to function
 type Handler struct {
-	UserService     interfaces.UserService
-	TeamService     interfaces.TeamService
 	CertService     interfaces.CertService
-	ResourceService interfaces.ResourceService
 	OrgService      interfaces.OrgService
+	ResourceService interfaces.ResourceService
+	SearchService   interfaces.SearchService
+	TeamService     interfaces.TeamService
+	UserService     interfaces.UserService
 }
 
 // Config will hold services that will eventually be injected into this
 // handler layer on handler initialization
 type Config struct {
 	R               *gin.Engine
-	UserService     interfaces.UserService
-	TeamService     interfaces.TeamService
 	CertService     interfaces.CertService
-	ResourceService interfaces.ResourceService
 	OrgService      interfaces.OrgService
+	ResourceService interfaces.ResourceService
+	SearchService   interfaces.SearchService
+	TeamService     interfaces.TeamService
+	UserService     interfaces.UserService
 }
 
 // NewHandler initializes the handler with required injected services along with http routes
@@ -36,11 +38,12 @@ func NewHandler(c *Config) {
 	// Create an account group
 	// Create a handler (which will later have injected services)
 	h := &Handler{
-		UserService:     c.UserService,
-		TeamService:     c.TeamService,
 		CertService:     c.CertService,
-		ResourceService: c.ResourceService,
 		OrgService:      c.OrgService,
+		ResourceService: c.ResourceService,
+		SearchService:   c.SearchService,
+		TeamService:     c.TeamService,
+		UserService:     c.UserService,
 	}
 
 	// Create a group, or base url for all routes
@@ -77,11 +80,18 @@ func NewHandler(c *Config) {
 	r.DELETE("/:id", h.DeleteUserResource)
 
 	o := c.R.Group("/organizations")
+	o.GET("/search/:id", h.GetOrgsInSearch)
 	o.GET("/:id/certifications", h.GetOrgCertifications)
 	o.GET("/:id", h.GetOrg)
 	o.PUT("/:id", h.UpdateOrg)
 	o.DELETE("/:id", h.DeleteOrg)
 	o.GET("/", h.GetOrgs)
+
+	s := c.R.Group("/search")
+	s.GET("/:id", h.GetSearch)
+	s.PUT("/:id", h.UpdateSearch)
+	s.DELETE("/:id", h.DeleteSearch)
+	s.GET("/", h.GetSearches)
 
 }
 
@@ -404,6 +414,25 @@ func (h *Handler) GetOrgs(c *gin.Context) {
 		})
 	}
 }
+func (h *Handler) GetOrgsInSearch(c *gin.Context) {
+	id := c.Param("id")
+	uid, err := uuid.Parse(id)
+	if err != nil {
+		log.Printf("Unable to generate UUID from request: %v\n", err)
+		e := apperrors.NewBadRequest("invalid organization id")
+		c.AbortWithStatusJSON(e.Status(), gin.H{"error": e})
+		return
+	}
+	if t, uErr := h.OrgService.GetAllInSearch(c, uid); uErr != nil {
+		log.Printf("Unable to find organization: %v\n%v", uid, uErr)
+		e := apperrors.NewNotFound("organization", uid.String())
+		c.AbortWithStatusJSON(e.Status(), gin.H{"error": e})
+	} else {
+		c.JSON(http.StatusOK, gin.H{
+			"organization": t,
+		})
+	}
+}
 func (h *Handler) GetOrgCertifications(c *gin.Context) {
 	id := c.Param("id")
 	uid, err := uuid.Parse(id)
@@ -425,3 +454,36 @@ func (h *Handler) GetOrgCertifications(c *gin.Context) {
 }
 func (h *Handler) UpdateOrg(c *gin.Context) {}
 func (h *Handler) DeleteOrg(c *gin.Context) {}
+
+func (h *Handler) GetSearch(c *gin.Context) {
+	id := c.Param("id")
+	uid, err := uuid.Parse(id)
+	if err != nil {
+		log.Printf("Unable to generate UUID from request: %v\n", err)
+		e := apperrors.NewBadRequest("invalid search id")
+		c.AbortWithStatusJSON(e.Status(), gin.H{"error": e})
+		return
+	}
+	if t, uErr := h.SearchService.Get(c, uid); uErr != nil {
+		log.Printf("Unable to find search: %v\n%v", uid, uErr)
+		e := apperrors.NewNotFound("search", uid.String())
+		c.AbortWithStatusJSON(e.Status(), gin.H{"error": e})
+	} else {
+		c.JSON(http.StatusOK, gin.H{
+			"search": t,
+		})
+	}
+}
+func (h *Handler) GetSearches(c *gin.Context) {
+	if t, uErr := h.SearchService.GetAll(c); uErr != nil {
+		log.Printf("Unable to find search: %v\n%v", uErr)
+		e := apperrors.NewNotFound("searches", uErr.Error())
+		c.AbortWithStatusJSON(e.Status(), gin.H{"error": e})
+	} else {
+		c.JSON(http.StatusOK, gin.H{
+			"searches": t,
+		})
+	}
+}
+func (h *Handler) UpdateSearch(c *gin.Context) {}
+func (h *Handler) DeleteSearch(c *gin.Context) {}

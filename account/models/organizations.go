@@ -16,7 +16,8 @@ type Organization struct {
 	PrimaryContactID      uuid.UUID `gorm:"type:uuid"`
 	PrimaryContact        User      `gorm:"foreignKey:PrimaryContactID"`
 	Website               string
-	Members               []*User         `gorm:"many2many:user_languages;"`
-	ActiveSearches        []*uuid.UUID    // many2many searches
-	CertificationsOffered []Certification `gorm:"foreignKey:OfferedByOrgID"`
+	Members               []*User          `gorm:"many2many:user_languages;"`
+	ActiveSearches        []*Searches      `gorm:"many2many:searches_organizations;"`
+	CertificationsOffered []*Certification `gorm:"foreignKey:OfferedByOrgID"`
+	Resources             []*Resource      `gorm:"foreignKey:OfferedByOrgID"`
 }

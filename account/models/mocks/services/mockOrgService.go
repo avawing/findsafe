@@ -30,3 +30,8 @@ func (m *MockOrgService) Delete(c context.Context, uid uuid.UUID) error {
 	args := m.Called(c, uid)
 	return args.Error(0)
 }
+
+func (m *MockOrgService) GetAllInSearch(c context.Context, uid uuid.UUID) ([]*models.Organization, error) {
+	args := m.Called(c, uid)
+	return args.Get(0).([]*models.Organization), args.Error(1)
+}
