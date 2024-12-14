@@ -21,7 +21,7 @@ func TestUserService(t *testing.T) {
 		expectedUser := &models.User{ID: uid, FirstName: "John", LastName: "Doe"}
 
 		// Mock the FindByCertID method to return a user
-		mockRepo.On("FindByID", mock.Anything, uid).Return(expectedUser, nil)
+		mockRepo.On("FindUserByID", mock.Anything, uid).Return(expectedUser, nil)
 
 		// Call the Get method
 		user, err := userService.Get(context.Background(), uid)
@@ -43,7 +43,7 @@ func TestUserService(t *testing.T) {
 		userToUpdate := &models.User{ID: uid, FirstName: "John", LastName: "Doe"}
 
 		// Mock the UpdateUser method
-		mockRepo.On("Update", mock.Anything, uid, userToUpdate).Return(nil)
+		mockRepo.On("UpdateUser", mock.Anything, uid, userToUpdate).Return(nil)
 
 		// Call the UpdateUser method
 		err := userService.Update(context.Background(), uid, userToUpdate)
@@ -63,7 +63,7 @@ func TestUserService(t *testing.T) {
 		uid := uuid.New()
 
 		// Mock the DeleteUser method
-		mockRepo.On("Delete", mock.Anything, uid).Return(nil)
+		mockRepo.On("DeleteUser", mock.Anything, uid).Return(nil)
 
 		// Call the DeleteUser method
 		err := userService.Delete(context.Background(), uid)
@@ -112,7 +112,7 @@ func TestUserService(t *testing.T) {
 		}
 
 		// Mock the FindUsersBySearchID method
-		mockRepo.On("FindBySearchID", mock.Anything, searchID).Return(expectedUsers, nil)
+		mockRepo.On("FindUsersBySearchID", mock.Anything, searchID).Return(expectedUsers, nil)
 
 		// Call the GetAllinSearch method
 		users, err := userService.GetAllinSearch(context.Background(), searchID)

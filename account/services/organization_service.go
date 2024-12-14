@@ -7,6 +7,14 @@ import (
 	"github.com/google/uuid"
 )
 
+// NewOrgService is a factory function for initializing a UserService with
+// its repository layer dependencies.
+func NewOrgService(c *USConfig) *OrgService {
+	return &OrgService{
+		OrgRepository: c.OrgRepository,
+	}
+}
+
 // OrgService acts as a struct for injecting an implementation of OrgRepository
 // for use in service methods.
 type OrgService struct {

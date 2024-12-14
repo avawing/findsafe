@@ -13,6 +13,7 @@ type USConfig struct {
 	UserRepository     interfaces.UserRepository
 	TeamRepository     interfaces.TeamRepository
 	ResourceRepository interfaces.ResourceRepository
+	OrgRepository      interfaces.OrgRepository
 	CertRepository     interfaces.CertRepository
 	SearchRepository   interfaces.SearchRepository
 }
@@ -32,19 +33,19 @@ func NewUserService(c *USConfig) *UserService {
 }
 
 func (s *UserService) Get(c context.Context, uid uuid.UUID) (*models.User, error) {
-	return s.UserRepository.FindByID(c, uid)
+	return s.UserRepository.FindUserByID(c, uid)
 }
 func (s *UserService) Update(c context.Context, uid uuid.UUID, user *models.User) error {
-	return s.UserRepository.Update(c, uid, user)
+	return s.UserRepository.UpdateUser(c, uid, user)
 }
 func (s *UserService) Delete(c context.Context, uid uuid.UUID) error {
-	return s.UserRepository.Delete(c, uid)
+	return s.UserRepository.DeleteUser(c, uid)
 }
 func (s *UserService) GetAllInOrg(c context.Context, orgID uuid.UUID) ([]*models.User, error) {
 	return s.UserRepository.FindByOrgID(c, orgID)
 }
 func (s *UserService) GetAllinSearch(c context.Context, searchID uuid.UUID) ([]*models.User, error) {
-	return s.UserRepository.FindBySearchID(c, searchID)
+	return s.UserRepository.FindUsersBySearchID(c, searchID)
 }
 func (s *UserService) GetAllInSortie(c context.Context, sortieID uuid.UUID) ([]*models.User, error) {
 	return s.UserRepository.FindBySortieID(c, sortieID)

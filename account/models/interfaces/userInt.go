@@ -20,10 +20,10 @@ type UserService interface {
 // UserRepository defines methods the service layer expects
 // any repository it interacts with to implement
 type UserRepository interface {
-	FindByID(c context.Context, uid uuid.UUID) (*models.User, error)
-	Update(c context.Context, uid uuid.UUID, user *models.User) error
-	Delete(c context.Context, uid uuid.UUID) error
+	FindUserByID(c context.Context, uid uuid.UUID) (*models.User, error)
+	UpdateUser(c context.Context, uid uuid.UUID, user *models.User) error
+	DeleteUser(c context.Context, uid uuid.UUID) error
 	FindByOrgID(c context.Context, orgID uuid.UUID) ([]*models.User, error)
-	FindBySearchID(c context.Context, searchID uuid.UUID) ([]*models.User, error)
+	FindUsersBySearchID(c context.Context, searchID uuid.UUID) ([]*models.User, error)
 	FindBySortieID(c context.Context, sortieID uuid.UUID) ([]*models.User, error)
 }

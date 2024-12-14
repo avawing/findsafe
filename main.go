@@ -3,6 +3,9 @@ package main
 import (
 	"context"
 	handlers "findsafe/account/handlers/rtb_api"
+	"findsafe/account/repository"
+	"findsafe/account/services"
+	"findsafe/account/utils"
 	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
@@ -29,15 +32,38 @@ import (
 
 func inject() *gin.Engine {
 	router := gin.Default()
+	db, err := utils.ConnectDB()
+	if err != nil {
+		log.Fatalf(err.Error())
+	}
 
+	handlers.NewHandler(&handlers.Config{
+		R: router,
+		CertService: services.NewCertService(&services.USConfig{
+			CertRepository: repository.NewCertRepository(db),
+		}),
+		OrgService: services.NewOrgService(&services.USConfig{
+			OrgRepository: repository.NewOrgRepository(db),
+		}),
+		ResourceService: services.NewResourceService(&services.USConfig{
+			ResourceRepository: repository.NewResourceRepository(db),
+		}),
+		SearchService: services.NewSearchService(&services.USConfig{
+			SearchRepository: repository.NewSearchRepository(db),
+		}),
+		TeamService: services.NewTeamService(&services.USConfig{
+			TeamRepository: repository.NewTeamRepository(db),
+		}),
+		UserService: services.NewUserService(&services.USConfig{
+			UserRepository: repository.NewUserRepository(db),
+		}),
+	})
 	return router
 }
 
 func main() {
 	r := inject()
-	handlers.NewHandler(&handlers.Config{
-		R: r,
-	})
+
 	srv := &http.Server{
 		Addr:    ":8000",
 		Handler: r,
