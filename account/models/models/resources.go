@@ -8,12 +8,12 @@ import (
 
 type Resource struct {
 	gorm.Model
-	ID                  uuid.UUID `gorm:"primaryKey;type:uuid;default:uuid_generate_v4()"`
+	ID                  uuid.UUID `gorm:"primaryKey;type:uuid;"`
 	Name                string
 	OwnerID             uuid.UUID
 	Owner               User `gorm:"foreignKey:OwnerID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
 	OwnerOrganizationID *uuid.UUID
-	OwnerOrganization   Organization `gorm:"foreignKey:OwnerOrganizationID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
+	OwnerOrganization   Organization `gorm:"foreignKey:OwnerOrganizationID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"` // Foreign key to Organization
 	IssuedToUserID      *uuid.UUID
 	IssuedToUser        User `gorm:"foreignKey:IssuedToUserID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
 	IssuedToTeamID      *uuid.UUID

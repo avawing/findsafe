@@ -8,7 +8,7 @@ import (
 
 type Searches struct {
 	gorm.Model
-	ID                 uuid.UUID `gorm:"primaryKey;type:uuid;default:uuid_generate_v4()"`
+	ID                 uuid.UUID `gorm:"primaryKey;type:uuid"`
 	Subjects           uuid.UUID // Foreign Key to Subjects
 	BaseAddress        string
 	BaseCity           string

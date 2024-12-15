@@ -7,14 +7,12 @@ import (
 
 type Team struct {
 	gorm.Model
-	ID             uuid.UUID `gorm:"primaryKey;type:uuid;default:uuid_generate_v4()"`
-	Name           string    `gorm:"unique,not null"`
-	CurrentLat     *string
-	CurrentLng     *string
-	TeamLeadID     uuid.UUID
-	TeamLead       User `gorm:"foreignKey:TeamLeadID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
-	ActiveSortie   *uuid.UUID
-	ActiveSearchID uuid.UUID
-	TeamMembers    []User     `gorm:"foreignKey:ActiveTeamID"`
-	TeamResources  []Resource `gorm:"foreignKey:IssuedToTeamID"`
+	ID             uuid.UUID `gorm:"primaryKey;type:uuid"`
+	Name           string
+	CurrentLat     string
+	CurrentLng     string
+	TeamLeadID     *uuid.UUID `gorm:"type:uuid;index"`
+	ActiveSortie   string
+	ActiveSearchID *uuid.UUID `gorm:"type:uuid;index"`
+	TeamLead       User       `gorm:"foreignKey:TeamLeadID;constraint:OnDelete:SET NULL;OnUpdate:CASCADE"`
 }

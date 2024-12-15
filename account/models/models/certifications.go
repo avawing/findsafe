@@ -8,15 +8,15 @@ import (
 
 type Certification struct {
 	gorm.Model
-	ID               uuid.UUID `gorm:"primaryKey;type:uuid;default:uuid_generate_v4()"`
-	Name             string    `gorm:"not null"` // TODO: enums provided by orgs ?
+	ID               uuid.UUID `gorm:"primaryKey;type:uuid"`
+	Name             string
 	FileLocation     string
-	DateGranted      time.Time `gorm:"not null"`
-	ExpirationDate   time.Time `gorm:"not null"`
+	DateGranted      time.Time
+	ExpirationDate   time.Time
 	UserID           uuid.UUID
-	User             User         `gorm:"notnull;foreignKey:UserID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
-	AccreditingOrgID uuid.UUID    // TODO: Certifications Offered by Organizations (I.E. NASAR) for USERS
-	AccreditingOrg   Organization `gorm:"notnull;foreignKey:OrganizationID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
+	User             User         `gorm:"foreignKey:UserID"`
+	AccreditingOrgID uuid.UUID    `gorm:"type:uuid"`                                                                  // Add this field to store the foreign key
+	AccreditingOrg   Organization `gorm:"foreignKey:AccreditingOrgID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"` // Define the foreign key constraint
 	OfferedByOrgID   uuid.UUID
-	OfferedByOrg     Organization `gorm:"notnull;foreignKey:OrganizationID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
+	OfferedByOrg     Organization `gorm:"foreignKey:OfferedByOrgID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
 }

@@ -7,7 +7,7 @@ import (
 
 type User struct {
 	gorm.Model
-	ID                uuid.UUID       `gorm:"primaryKey;type:uuid;default:uuid_generate_v4()"`
+	ID                uuid.UUID       `gorm:"primaryKey;type:uuid"`
 	FirstName         string          `gorm:"not null, type:varchar(100)" json:"first_name"`
 	LastName          string          `gorm:"not null, type:varchar(100)" json:"last_name"`
 	City              string          `json:"city"`
@@ -17,13 +17,13 @@ type User struct {
 	Certifications    []Certification `gorm:"foreignKey:UserID"`
 	Resources         []Resource      `gorm:"foreignKey:OwnerID"`
 	AssignedResources []Resource      `gorm:"foreignKey:IssuedToUserID"`
-	Organizations     []*Organization `gorm:"many2many:user_languages;"`
+	Organizations     []*Organization `gorm:"many2many:user_organizations;"`
 	// Foreign Key
 	ActiveSearchID *uuid.UUID `json:"active_search_id"`
 	ActiveSortieID *uuid.UUID `json:"active_sortie_id"`
 	ActiveTeamID   *uuid.UUID `json:"active_team_id"`
 	Team           *Team      `gorm:"foreignKey:ActiveTeamID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
-	TeamRole       *string    `json:"team_role"`
+	TeamRole       *uuid.UUID `json:"team_role"`
 
 	//Searches       int
 	//Sorties        int
