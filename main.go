@@ -2,10 +2,10 @@ package main
 
 import (
 	"context"
-	handlers "findsafe/account/handlers/rtb_api"
-	"findsafe/account/repository"
-	"findsafe/account/services"
-	"findsafe/account/utils"
+	handlers "findsafe/backend/handlers/rtb_api"
+	"findsafe/backend/repository"
+	"findsafe/backend/services"
+	"findsafe/backend/utils"
 	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
