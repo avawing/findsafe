@@ -14,6 +14,10 @@
         control: { type: 'select' },
         options: ['sm', 'md', 'lg', 'xl'],
       },
+			color: {
+				control: { type: 'select' },
+				options: ['primary','tertiary','success','warning'],
+			},
     },
     args: {
       onClick: fn(),
