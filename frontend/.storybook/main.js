@@ -17,5 +17,11 @@ const config = {
     "name": "@storybook/sveltekit",
     "options": {}
   },
+  "webpackFinal": async (config) => {
+    config.module.rules.push({
+      test: /\.css$/,
+      use: ['postcss-loader'],
+    });
+    }
 };
 export default config;

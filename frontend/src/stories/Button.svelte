@@ -1,6 +1,5 @@
 <script>
-  import './button.css';
-
+  import '../app.css';
   /**
    * @typedef {Object} Props
    * @property {boolean} [primary] Is this the principal call to action on the page?
