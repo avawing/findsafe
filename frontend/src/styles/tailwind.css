@@ -2,7 +2,6 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 
-
-/* this file counts as tailwind.css for all googling / tutorial reading */
-
-
+body {
+    @apply bg-surface-50-900-token;
+}
