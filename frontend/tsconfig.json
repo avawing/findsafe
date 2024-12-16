@@ -1,15 +1,12 @@
 {
-	"extends": "./.svelte-kit/tsconfig.json",
 	"compilerOptions": {
-		"allowJs": true,
-		"checkJs": true,
-		"esModuleInterop": true,
-		"forceConsistentCasingInFileNames": true,
-		"resolveJsonModule": true,
-		"skipLibCheck": true,
-		"sourceMap": true,
-		"strict": true,
-		"module": "NodeNext",
-		"moduleResolution": "NodeNext"
+		"typeRoots": ["node_modules/@types", "src/types"],
+		"esModuleInterop": true,        // Enables compatibility with CommonJS modules
+		"allowSyntheticDefaultImports": true, // Allows default imports from CommonJS
+		"moduleResolution": "nodenext",      // Use Node's module resolution strategy
+		"target": "ESNext",              // Use the latest ECMAScript features
+		"module": "ESNext",              // Use ES modules
+		"strict": true,                  // Enable strict type checking
+		"skipLibCheck": true             // Skip type checking of libraries (optional but helpful)
 	}
 }
