@@ -1,8 +1,17 @@
 <script>
-	let isOpen = false;
-	import { AppBar, AppRail, AppRailAnchor, AppRailTile } from '@skeletonlabs/skeleton';
+	import { AppBar, AppRail, AppRailAnchor} from '@skeletonlabs/skeleton';
+	import NavItem from './NavItem.svelte';
 	import 'font-awesome/css/font-awesome.min.css';
 	let title = 'Home';
+	let isOpen = false;
+
+	let navItems = [
+		{ label: 'Home', title: 'Home', href: '#home' },
+		{ label: 'Search', title: 'Search', href: '#search' },
+		{ label: 'Sortie', title: 'Sortie', href: '#sortie' },
+		{ label: 'Resources', title: 'Resources', href: '#resources' },
+		{ label: 'Organization', title: 'Organization', href: '#organization' },
+	];
 
   // Dynamic Title based on
 	function changeTitle(newTitle) {
@@ -33,41 +42,19 @@
 
 <!-- AppRail Sidebar using SkeletonLabs components -->
 <div
-	class={`fixed inset-0 bg-surface-100-800-token transform ${isOpen ? 'translate-x-0 opacity-100' : '-translate-x-full opacity-0'} transition-all duration-300 ease-in-out z-40`}
->
-	<!-- AppTile items inside AppRail -->
-	<AppRail class="w-40 h-full bg-surface-100-800-token p-5 flex flex-col gap-0 space-y-1">
-		<AppRailAnchor on:click={toggleNavbar} > Back </AppRailAnchor>
-		<AppRailTile
-			on:click={() => changeTitle('Home') }
-			href="#"
-			class="text-xl  hover:bg-primary-hover-token active:bg-primary-active-token p-3 rounded-md ">
-			Home
+	class={`fixed inset-0 bg-surface-100-800-token transform ${isOpen ? 'translate-x-0 opacity-100' : '-translate-x-full opacity-0'} transition-all duration-300 ease-in-out z-40`}>
 
-		</AppRailTile>
-		<AppRailTile
-			on:click={() => changeTitle('Search')}
-			href="#"
-			class="text-xl  hover:bg-primary-hover-token active:bg-primary-active-token p-3 rounded-md ">
-			Search
-		</AppRailTile>
-		<AppRailTile
-			on:click={() => changeTitle('Sortie')}
-			href="#"
-			class="text-xl  hover:bg-primary-hover-token active:bg-primary-active-token p-3 rounded-md ">
-			Sortie
-		</AppRailTile>
-		<AppRailTile
-			on:click={() => changeTitle('Resources')}
-			href="#"
-			class="text-xl  hover:bg-primary-hover-token active:bg-primary-active-token p-3 rounded-md ">
-			Resources
-		</AppRailTile>
-		<AppRailTile
-			on:click={() => changeTitle('Organization')}
-			href="#"
-			class="text-xl  hover:bg-primary-hover-token active:bg-primary-active-token p-3 rounded-md ">
-			Organization
-		</AppRailTile>
+	<AppRail class="w-40 h-full bg-surface-100-800-token p-5 flex flex-col gap-0 space-y-1">
+		<AppRailAnchor on:click={toggleNavbar}> Back </AppRailAnchor>
+
+		<!-- Loop over navItems and create NavItem components dynamically -->
+		{#each navItems as item (item.label)}
+			<NavItem
+				label={item.label}
+				title={item.title}
+				href={item.href}
+				onClick={changeTitle}
+			/>
+		{/each}
 	</AppRail>
 </div>
