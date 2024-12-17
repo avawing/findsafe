@@ -1,20 +1,16 @@
 <script>
-	import { AppBar, AppRail, AppRailTile, ListBox, ListBoxItem } from '@skeletonlabs/skeleton';
+	import { AppBar } from '@skeletonlabs/skeleton';
+	import Navbar from '../stories/Navbar.svelte';
+
 	import '../app.css';
 	let { children } = $props();
 	let valueSingle = 'books';
 
 </script>
-<AppBar gridColumns="grid-cols-3" slotDefault="place-self-center" slotTrail="place-content-end">
-	<svelte:fragment slot="lead">(icon)</svelte:fragment>
-	(title)
-	<svelte:fragment slot="trail">(actions)</svelte:fragment>
-</AppBar>
+<main>
 
-<AppRail>
-		<AppRailTile bind:group={valueSingle} name="medium" value="books">Books</AppRailTile>
-		<AppRailTile bind:group={valueSingle} name="medium" value="movies">Movies</AppRailTile>
-		<AppRailTile bind:group={valueSingle} name="medium" value="tv">TV</AppRailTile>
-</AppRail>
 
+	<Navbar />
+</main>
+	<!-- The rest of your content here -->
 {@render children()}
