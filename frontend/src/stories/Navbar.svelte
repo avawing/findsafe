@@ -6,11 +6,11 @@
 	let isOpen = false;
 
 	let navItems = [
-		{ label: 'Home', title: 'Home', href: '#home' },
-		{ label: 'Search', title: 'Search', href: '#search' },
-		{ label: 'Sortie', title: 'Sortie', href: '#sortie' },
-		{ label: 'Resources', title: 'Resources', href: '#resources' },
-		{ label: 'Organization', title: 'Organization', href: '#organization' },
+		{ label: 'Home', title: 'Home', href: '/' },
+		{ label: 'Search', title: 'Search', href: '/searches' },
+		{ label: 'Sortie', title: 'Sortie', href: '/sortie' },
+		{ label: 'Resources', title: 'Resources', href: '/resources' },
+		{ label: 'Organization', title: 'Organization', href: '/organizations' },
 	];
 
   // Dynamic Title based on
@@ -49,12 +49,13 @@
 
 		<!-- Loop over navItems and create NavItem components dynamically -->
 		{#each navItems as item (item.label)}
+			<a href={item.href}>
 			<NavItem
 				label={item.label}
 				title={item.title}
-				href={item.href}
 				onClick={changeTitle}
 			/>
+			</a>
 		{/each}
 	</AppRail>
 </div>
