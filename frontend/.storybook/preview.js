@@ -16,9 +16,9 @@ const preview = {
         skeleton: 'skeleton',
         crimson: 'crimson',
         modern: 'modern',
-        vintage: 'vintage'
+        hamlindigo: 'hamlindigo'
       },
-      defaultTheme: 'vintage',
+      defaultTheme: 'hamlindigo',
       parentSelector: 'body',
       attributeName: 'data-theme'
     })
