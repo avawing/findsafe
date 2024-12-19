@@ -80,6 +80,7 @@
 		"@tailwindcss/container-queries": "^0.1.1",
 		"@tailwindcss/forms": "^0.5.9",
 		"@tailwindcss/typography": "^0.5.15",
+		"@vincjo/datatables": "^2.2.0",
 		"font-awesome": "^4.7.0"
 	}
 }

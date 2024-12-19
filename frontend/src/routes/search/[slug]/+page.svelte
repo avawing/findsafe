@@ -5,7 +5,7 @@
 </script>
 <TabGroup>
 	<Tab bind:group={tabSet} name="Resources" value={0}>
-		<svelte:fragment slot="lead">"Resources"</svelte:fragment>
+		<svelte:fragment slot="lead">Resources</svelte:fragment>
 	</Tab>
 	<Tab bind:group={tabSet} name="Teams" value={1}>Teams</Tab>
 	<Tab bind:group={tabSet} name="Sorties" value={2}>Sorties</Tab>
