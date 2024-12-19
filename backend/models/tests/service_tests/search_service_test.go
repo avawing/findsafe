@@ -25,7 +25,7 @@ func TestSearchService(t *testing.T) {
 	t.Run("Test Get", func(t *testing.T) {
 		// Setting up the mock response
 		search := &models.Searches{ID: testUID}
-		mockRepo.On("FindUsersBySearchID", mock.Anything, testUID).Return(search, nil)
+		mockRepo.On("FindBySearchID", mock.Anything, testUID).Return(search, nil)
 
 		// Calling the service method
 		result, err := service.Get(context.Background(), testUID)

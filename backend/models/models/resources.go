@@ -17,7 +17,7 @@ type Resource struct {
 	IssuedToUserID      *uuid.UUID
 	IssuedToUser        User `gorm:"foreignKey:IssuedToUserID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
 	IssuedToTeamID      *uuid.UUID
-	IssuedToTeam        User `gorm:"foreignKey:IssuedToTeamID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
+	IssuedToTeam        Team `gorm:"foreignKey:IssuedToTeamID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
 	IssuedAt            time.Time
 	ReturnedAt          time.Time
 	ActiveSearchID      *uuid.UUID

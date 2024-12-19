@@ -27,11 +27,6 @@ var orgsuuids = []uuid.UUID{
 	uuid.Must(uuid.NewRandom()),
 }
 
-var resourceuuids = []uuid.UUID{
-	uuid.Must(uuid.NewRandom()),
-	uuid.Must(uuid.NewRandom()),
-}
-
 var searchuuids = []uuid.UUID{
 	uuid.Must(uuid.NewRandom()),
 	uuid.Must(uuid.NewRandom()),
@@ -42,25 +37,17 @@ var teamuuids = []uuid.UUID{
 	uuid.Must(uuid.NewRandom()),
 }
 
-var useruuids = []uuid.UUID{
-	uuid.Must(uuid.NewRandom()), // Alice
-	uuid.Must(uuid.NewRandom()), // Bob
-	uuid.Must(uuid.NewRandom()), // Charlie
-	uuid.Must(uuid.NewRandom()), // David
-}
-
 var resources = []models.Resource{
 	{
-		ID:                  resourceuuids[0],
+		ID:                  uuid.MustParse("daefd7cd-0b82-403f-babe-871548f7e976"),
 		Name:                "Resource A",
-		OwnerID:             useruuids[0],                                            // Owner: Alice
+		OwnerID:             users[0].ID,                                             // Owner: Alice
 		Owner:               users[0],                                                // Alice is the owner
 		OwnerOrganizationID: nil,                                                     // No organization for now
 		OwnerOrganization:   models.Organization{},                                   // Empty organization (can be filled if needed)
-		IssuedToUserID:      &useruuids[1],                                           // Issued to Bob
-		IssuedToUser:        users[1],                                                // Bob is issued this resource
+		IssuedToUserID:      &users[1].ID,                                            // Issued to Bob
 		IssuedToTeamID:      nil,                                                     // No team assigned
-		IssuedToTeam:        models.User{},                                           // No team user associated
+		IssuedToTeam:        models.Team{},                                           // No team user associated
 		IssuedAt:            time.Date(2024, time.December, 1, 0, 0, 0, 0, time.UTC), // Fixed timestamp
 		ReturnedAt:          time.Time{},                                             // Empty time (not returned yet)
 		ActiveSearchID:      nil,                                                     // Not associated with any search
@@ -71,16 +58,14 @@ var resources = []models.Resource{
 		DesignatedPurpose:   "Testing",                                               // Designated purpose for the resource
 	},
 	{
-		ID:                  resourceuuids[1],
+		ID:                  uuid.MustParse("6352951c-1fcb-4351-a2b3-acdc264f18b3"),
 		Name:                "Resource B",
-		OwnerID:             useruuids[2],                                            // Owner: Charlie
-		Owner:               users[2],                                                // Charlie is the owner
+		OwnerID:             users[2].ID,                                             // Owner: Charlie
 		OwnerOrganizationID: nil,                                                     // No organization for now
 		OwnerOrganization:   models.Organization{},                                   // Empty organization (can be filled if needed)
-		IssuedToUserID:      &useruuids[3],                                           // Issued to David
-		IssuedToUser:        users[3],                                                // David is issued this resource
+		IssuedToUserID:      &users[3].ID,                                            // Issued to David
 		IssuedToTeamID:      nil,                                                     // No team assigned
-		IssuedToTeam:        models.User{},                                           // No team user associated
+		IssuedToTeam:        models.Team{},                                           // No team user associated
 		IssuedAt:            time.Date(2024, time.December, 2, 0, 0, 0, 0, time.UTC), // Fixed timestamp
 		ReturnedAt:          time.Time{},                                             // Empty time (not returned yet)
 		ActiveSearchID:      nil,                                                     // Not associated with any search
@@ -95,7 +80,7 @@ var resources = []models.Resource{
 // Create user instances with unique IDs
 var users = []models.User{
 	{
-		ID:        useruuids[0],
+		ID:        uuid.MustParse("daefd7cd-0b82-403f-babe-871548f7e976"),
 		FirstName: "Alice",
 		LastName:  "Smith",
 		City:      "New York",
@@ -104,7 +89,7 @@ var users = []models.User{
 		Phone:     "+1-234-567-8901",
 	},
 	{
-		ID:        useruuids[1],
+		ID:        uuid.MustParse("6352951c-1fcb-4351-a2b3-acdc264f18b3"),
 		FirstName: "Bob",
 		LastName:  "Johnson",
 		City:      "Los Angeles",
@@ -113,7 +98,7 @@ var users = []models.User{
 		Phone:     "+1-234-567-8902",
 	},
 	{
-		ID:        useruuids[2],
+		ID:        uuid.MustParse("d3367954-e5a8-4df4-821a-640b4d6d4360"),
 		FirstName: "Charlie",
 		LastName:  "Davis",
 		City:      "Chicago",
@@ -122,7 +107,7 @@ var users = []models.User{
 		Phone:     "+1-234-567-8903",
 	},
 	{
-		ID:        useruuids[3],
+		ID:        uuid.MustParse("9847966c-8f21-45fa-b72d-a40206ba5199"),
 		FirstName: "David",
 		LastName:  "Miller",
 		City:      "San Francisco",
@@ -146,8 +131,7 @@ var searches = []models.Searches{
 		SearchResult:       "Success",
 		OrganizationID:     orgsuuids[0], // Assuming you have an org UUID to link here
 		Organization:       models.Organization{ID: orgsuuids[0]},
-		PointOfContactID:   useruuids[0], // Alice is the point of contact
-		PointOfContact:     users[0],     // Alice is the point of contact
+		PointOfContactID:   users[0].ID, // Alice is the point of contact
 		Internet:           "www.example.com",
 		InternetAccess:     "Wi-Fi",
 		MapStorageLocation: "s3://maps/location1",
@@ -166,8 +150,7 @@ var searches = []models.Searches{
 		SearchResult:       "Failed",
 		OrganizationID:     orgsuuids[0],
 		Organization:       models.Organization{ID: orgsuuids[0]},
-		PointOfContactID:   useruuids[1], // Bob is the point of contact
-		PointOfContact:     users[1],     // Bob is the point of contact
+		PointOfContactID:   users[1].ID, // Bob is the point of contact
 		Internet:           "www.anotherexample.com",
 		InternetAccess:     "Ethernet",
 		MapStorageLocation: "s3://maps/location2",
@@ -183,7 +166,7 @@ var teams = []models.Team{
 		Name:         "Alpha Team",
 		CurrentLat:   "37.7749",
 		CurrentLng:   "-122.4194",
-		TeamLeadID:   &useruuids[0], // Alice is the team lead
+		TeamLeadID:   &users[0].ID, // Alice is the team lead
 		ActiveSortie: "Sortie-001",
 		TeamLead:     users[0],
 	},
@@ -192,7 +175,7 @@ var teams = []models.Team{
 		Name:         "Bravo Team",
 		CurrentLat:   "34.0522",
 		CurrentLng:   "-118.2437",
-		TeamLeadID:   &useruuids[2], // Charlie is the team lead
+		TeamLeadID:   &users[2].ID, // Charlie is the team lead
 		ActiveSortie: "Sortie-002",
 		TeamLead:     users[2],
 	},
